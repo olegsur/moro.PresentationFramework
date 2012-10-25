@@ -1,0 +1,57 @@
+// 
+// CanvasChild.cs
+//  
+// Author:
+//       Oleg Sur <oleg.sur@gmail.com>
+// 
+// Copyright (c) 2012 Oleg Sur
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+using System;
+
+namespace moro.Framework
+{
+	public class CanvasChild : ContentControl
+	{
+		private readonly DependencyProperty<double> x;
+		private readonly DependencyProperty<double> y;
+
+		public double X { 
+			get { return x.Value; }
+			set { x.Value = value; }
+		}
+
+		public double Y { 
+			get { return y.Value; }
+			set { y.Value = value; }
+		}
+
+		public CanvasChild (UIElement child)
+		{
+			x = BuildProperty<double> ("X");
+			y = BuildProperty<double> ("Y");
+
+			Content = child;
+
+			BindingOperations.SetBinding (child.GetProperty ("Visibility"), GetProperty ("Visibility"));
+		}
+	}
+}
+

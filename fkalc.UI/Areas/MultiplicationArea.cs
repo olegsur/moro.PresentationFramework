@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System;
 
-using fkalc.UI.Framework;
+using moro.Framework;
 
 namespace fkalc.UI
 {

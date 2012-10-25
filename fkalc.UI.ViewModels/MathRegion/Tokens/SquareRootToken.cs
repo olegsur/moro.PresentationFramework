@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System;
 using fkalc.UI.Common.MathRegion.Tokens;
-using fkalc.UI.Framework;
+using moro.Framework;
 
 namespace fkalc.UI.ViewModels.MathRegion.Tokens
 {

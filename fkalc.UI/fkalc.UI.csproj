@@ -90,13 +90,13 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\fkalc.UI.Framework\fkalc.UI.Framework.csproj">
-      <Project>{89883CC4-E276-40ED-802F-260F61A610C1}</Project>
-      <Name>fkalc.UI.Framework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\fkalc.UI.ViewModels\fkalc.UI.ViewModels.csproj">
+    <ProjectReference Include="ViewModels\fkalc.UI.ViewModels.csproj">
       <Project>{B196D221-ACC3-42F3-9666-51C5877407CA}</Project>
       <Name>fkalc.UI.ViewModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\moro.Framework\moro.Framework.csproj">
+      <Project>{89883CC4-E276-40ED-802F-260F61A610C1}</Project>
+      <Name>moro.Framework</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

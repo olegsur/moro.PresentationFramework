@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fkalc.UI", "fkalc.UI\fkalc.UI.csproj", "{44E2A5D4-9CC0-4CF4-8FD8-7856C1624DEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fkalc.UI.Framework", "fkalc.UI.Framework\fkalc.UI.Framework.csproj", "{89883CC4-E276-40ED-802F-260F61A610C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "moro.Framework", "moro.Framework\moro.Framework.csproj", "{89883CC4-E276-40ED-802F-260F61A610C1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fkalc.UI.ViewModels", "fkalc.UI.ViewModels\fkalc.UI.ViewModels.csproj", "{B196D221-ACC3-42F3-9666-51C5877407CA}"
 EndProject
