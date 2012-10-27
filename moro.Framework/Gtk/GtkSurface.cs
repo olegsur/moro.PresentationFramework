@@ -26,7 +26,7 @@
 using System;
 namespace moro.Framework
 {
-	public class GtkSurface : ISurface
+	public class GtkSurface
 	{
 		public double Height { get; private set; }
 		public double Width { get; private set; }
@@ -38,8 +38,8 @@ namespace moro.Framework
 		{
 			Owner = owner;
 			
-			Width = 100;
-			Height = 50;
+			Width = owner.WidthRequest ?? 100;
+			Height = owner.HeightRequest ?? 50;
 			
 			Window = new Gtk.Window (Gtk.WindowType.Toplevel)
 			{
@@ -55,13 +55,11 @@ namespace moro.Framework
 			
 			Keyboard.Device.RegisterKeyboardInputProvider (new WidgetKeyboardInputProvider (elementHost));
 			Mouse.Device.RegistedMouseInputProvider (new WidgetMouseInputProvider (elementHost));
-		}
-		
-		public void Show ()
-		{			
-			Window.Show ();
-		}
 
+			Owner.Closed += HandleClosed;
+			Owner.Showed += HandleShowed;
+		}
+						
 		public void Resize (Size size)
 		{			
 			Width = size.Width;
@@ -87,11 +85,21 @@ namespace moro.Framework
 			}		
 		}
 				
-		public void Close ()
+		private void HandleClosed (object sender, EventArgs e)
 		{
 			Window.Destroy ();
 		}
-		
+
+		private void HandleShowed (object sender, EventArgs e)
+		{		
+			var size = new Size (Width, Height);
+
+			Owner.Measure (size);
+			Owner.Arrange (new Rect (Owner.DesiredSize));
+
+			Resize (new Size (Owner.Width, Owner.Height));
+			Window.Show ();
+		}
 	}
 }
 

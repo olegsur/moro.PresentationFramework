@@ -46,6 +46,15 @@ namespace moro.Framework
 		{
 			Gtk.Application.Quit ();
 		}
+
+		public void RegisterWindow (Window window)
+		{
+			new GtkSurface (window);
+		}
+
+		public void UnregisterWindow (Window window)
+		{
+		}
 	}
 }
 

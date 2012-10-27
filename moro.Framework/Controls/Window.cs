@@ -30,6 +30,7 @@ namespace moro.Framework
 	public class Window : ContentControl
 	{
 		public event EventHandler Closed;
+		internal event EventHandler Showed;
 	
 		private readonly DependencyProperty<string> title;
 		
@@ -37,9 +38,7 @@ namespace moro.Framework
 			get { return title.Value;} 
 			set { title.Value = value; }
 		}
-		
-		private ISurface Surface { get; set;}
-		
+
 		public Window ()
 		{
 			if (!Application.IsInitialized)
@@ -47,40 +46,31 @@ namespace moro.Framework
 			
 			title = BuildProperty<string> ("Title");
 						
-			Surface = new GtkSurface (this);
-			
 			StyleHelper.ApplyStyle (this, typeof(Window));
+			Application.Current.RegisterWindow (this);			
 		}
 		
 		public void Show ()
 		{
-			var width = WidthRequest ?? 100;
-			var height = HeightRequest ?? 50;
-			
-			Measure (new Size (width, height));
-			Arrange (new Rect (1, 1, width, height));
-			
-			Surface.Show ();
+			RaiseShowed ();
 		}
-		
-		protected override void ArrangeOverride (Size finalSize)
-		{
-			base.ArrangeOverride (finalSize);
-			
-			Surface.Resize (finalSize);
-		}
-		
+
 		public void Close ()
 		{
-			Surface.Close ();
+			Application.Current.UnregisterWindow (this);	
 			RaiseClosed ();
 		}
 
 		private void RaiseClosed ()
 		{
 			if (Closed != null)
-				Closed (this, EventArgs.Empty);
-					
+				Closed (this, EventArgs.Empty);					
+		}
+
+		private void RaiseShowed ()
+		{
+			if (Showed != null)
+				Showed (this, EventArgs.Empty);
 		}
 	}
 }

@@ -30,9 +30,12 @@ namespace moro.Framework
 {
 	public interface IApplication
 	{
-		void Init();
-		void Run();
+		void Init ();
+		void Run ();
 		void Shutdown ();
+
+		void RegisterWindow (Window window);
+		void UnregisterWindow (Window window);
 	}
 }
 

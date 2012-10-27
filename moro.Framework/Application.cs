@@ -35,10 +35,13 @@ namespace moro.Framework
 		
 		public Dictionary<object, object> Resources { get; private set; }
 		public Window MainWindow { get; private	set; }		
-		
+				
 		internal static readonly bool IsInitialized = false;
 		
 		private IApplication aplication;
+		private readonly List<Window> windows = new List<Window> ();
+		
+		public IEnumerable<Window> Windows { get { return windows; } }
 	
 		static Application ()
 		{	
@@ -74,7 +77,7 @@ namespace moro.Framework
 			Resources [typeof(UserControl)] = style;
 			
 			style = new Style ();			
-			style.Setters.Add (new Setter ("Template", new ControlTemplate (element => WindowTemplate(element as Window))));			
+			style.Setters.Add (new Setter ("Template", new ControlTemplate (element => WindowTemplate (element as Window))));			
 			Resources [typeof(Window)] = style;
 		}
 		
@@ -215,11 +218,23 @@ namespace moro.Framework
 		public void Run (Window window)
 		{
 			MainWindow = window;
-			MainWindow.Closed += (sender, e) => aplication.Shutdown();
+			MainWindow.Closed += (sender, e) => aplication.Shutdown ();
 			
 			window.Show ();
 			
 			aplication.Run ();			
+		}
+		
+		internal void RegisterWindow (Window window)
+		{
+			windows.Add (window);
+			aplication.RegisterWindow (window);
+		}
+
+		internal void UnregisterWindow (Window window)
+		{
+			windows.Remove (window);
+			aplication.UnregisterWindow (window);
 		}
 	}
 }

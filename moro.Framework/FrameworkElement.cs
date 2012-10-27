@@ -31,8 +31,8 @@ namespace moro.Framework
 {
 	public class FrameworkElement : UIElement
 	{
-		public double Height { get; protected set; }
-		public double Width { get; protected set; }	
+		public double Height { get; private set; }
+		public double Width { get; private set; }	
 		
 		public double? HeightRequest { get; set; }
 		public double? WidthRequest { get; set; }
