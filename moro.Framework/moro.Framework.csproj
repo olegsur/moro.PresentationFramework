@@ -98,15 +98,9 @@
     <Compile Include="Media\Transformations\TranslateTransform.cs" />
     <Compile Include="Common\Matrix.cs" />
     <Compile Include="Media\Transformations\MatrixTransform.cs" />
-    <Compile Include="DependencyProperty.cs" />
-    <Compile Include="IDependencyProperty.cs" />
-    <Compile Include="Data\BindingOperations.cs" />
-    <Compile Include="DependencyObject.cs" />
-    <Compile Include="DPropertyValueChangedEventArgs.cs" />
     <Compile Include="Controls\ItemsControl.cs" />
     <Compile Include="Common\ObservableCollection.cs" />
     <Compile Include="Templates\DataTemplate.cs" />
-    <Compile Include="Data\IValueConverter.cs" />
     <Compile Include="Shapes\Rectangle.cs" />
     <Compile Include="Controls\Panels\Grid.cs" />
     <Compile Include="Controls\Panels\GridChild.cs" />
@@ -114,15 +108,7 @@
     <Compile Include="Controls\TabControl.cs" />
     <Compile Include="Media\VisualTreeHelper.cs" />
     <Compile Include="Input\RoutedEvent.cs" />
-    <Compile Include="Data\EmptyConverter.cs" />
-    <Compile Include="Data\BindingExpression.cs" />
-    <Compile Include="Data\Binding.cs" />
-    <Compile Include="Data\PropertyExpression.cs" />
-    <Compile Include="Data\PathExpression.cs" />
-    <Compile Include="Data\AttachedPropertyExpression.cs" />
-    <Compile Include="IAttachedPropertiesContainer.cs" />
     <Compile Include="Input\ICommand.cs" />
-    <Compile Include="Data\SelfExpression.cs" />
     <Compile Include="Input\KeyGesture.cs" />
     <Compile Include="Input\KeyBinding.cs" />
     <Compile Include="Controls\BooleanToVisibilityConverter.cs" />
@@ -168,5 +154,11 @@
     <Folder Include="Media\Geometries\" />
     <Folder Include="Style\" />
     <Folder Include="Gtk\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\moro.Framework.Data\moro.Framework.Data.csproj">
+      <Project>{49DA0351-1DBC-45D8-B8EF-5F7FF8BAF354}</Project>
+      <Name>moro.Framework.Data</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

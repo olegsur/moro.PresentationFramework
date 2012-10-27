@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using Gtk;
 using System.Linq;
+using moro.Framework.Data;
 
 namespace moro.Framework
 {

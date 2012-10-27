@@ -1,5 +1,5 @@
 //
-// AttachedPropertyExpression.cs
+// PathExpression.cs
 //
 // Author:
 //       Oleg Sur <oleg.sur@gmail.com>
@@ -25,30 +25,22 @@
 // THE SOFTWARE.
 using System;
 
-namespace moro.Framework
+namespace moro.Framework.Data
 {
-	public class AttachedPropertyExpression : BindingExpression
+	public class PathExpression : BindingExpression
 	{
 		private string PropertyName { get; set; }
-		private object Item { get; set; }
 		private IDependencyProperty Source { get; set; }
 
-		public AttachedPropertyExpression (BindingExpression expression, object item, string propertyName)
+		public PathExpression (BindingExpression expression, string propertyName)
 		{
 			PropertyName = propertyName;
-			Item = item;
 
 			Source = expression.Property;
 
 			if (Source != null) {
-				var container = Source.Value as IAttachedPropertiesContainer;
-
-				if (container != null) {
-					Property = container.GetProperty (item, propertyName);
-
-					container.AddedItem += HandleAddedItem;
-					container.RemovedItem += HandleRemovedItem;
-				}
+				if (Source.Value != null)
+					Property = (Source.Value as DependencyObject).GetProperty (propertyName);
 				Source.DependencyPropertyValueChanged += HandlePropertyValueChanged;
 			}
 
@@ -57,73 +49,21 @@ namespace moro.Framework
 
 		private void HandlePropertyChanged (object sender, DPropertyValueChangedEventArgs e)
 		{		
-			if (Source != null) {
+			if (Source != null)
 				Source.DependencyPropertyValueChanged -= HandlePropertyValueChanged;
-
-				var container = Source.Value as IAttachedPropertiesContainer;
-
-				if (container != null) {
-					container.AddedItem -= HandleAddedItem;
-					container.RemovedItem -= HandleRemovedItem;
-				}
-			}
 
 			Source = e.NewValue as IDependencyProperty;
 
 			if (Source != null) {
-				var container = Source.Value as IAttachedPropertiesContainer;
-
-				if (container != null) {
-					Property = container.GetProperty (Item, PropertyName);
-
-					container.AddedItem += HandleAddedItem;
-					container.RemovedItem += HandleRemovedItem;
-				}
+				if (Source.Value != null)
+					Property = (Source.Value as DependencyObject).GetProperty (PropertyName);
 				Source.DependencyPropertyValueChanged += HandlePropertyValueChanged;
-			} else {
-				Property = null;
 			}
 		}
 
 		private void HandlePropertyValueChanged (object sender, DPropertyValueChangedEventArgs e)
 		{
-			if (e.OldValue is IAttachedPropertiesContainer) {
-				var oldContainer = e.OldValue as IAttachedPropertiesContainer;
-
-				if (oldContainer != null) {	
-					oldContainer.AddedItem += HandleAddedItem;
-					oldContainer.RemovedItem += HandleRemovedItem;
-				}
-			}
-
-			var container = e.NewValue as IAttachedPropertiesContainer;
-
-			if (container != null) {
-				Property = container.GetProperty (Item, PropertyName);
-
-				container.AddedItem += HandleAddedItem;
-				container.RemovedItem += HandleRemovedItem;
-			} else {
-				Property = null;
-			}
-		}
-
-		private void HandleAddedItem (object sender, ItemEventArgs e)
-		{
-			if (e.Item != Item)
-				return;
-
-			var container = Source.Value as IAttachedPropertiesContainer;
-
-			Property = container.GetProperty (Item, PropertyName);
-		}
-
-		private void HandleRemovedItem (object sender, ItemEventArgs e)
-		{
-			if (e.Item != Item)
-				return;
-
-			Property = null;
+			Property = (e.NewValue as DependencyObject).GetProperty (PropertyName);
 		}
 	}
 }

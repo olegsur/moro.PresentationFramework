@@ -1,5 +1,5 @@
 //
-// EmptyConverter.cs
+// DPropertyValueChangedEventArgs.cs
 //
 // Author:
 //       Oleg Sur <oleg.sur@gmail.com>
@@ -25,18 +25,29 @@
 // THE SOFTWARE.
 using System;
 
-namespace moro.Framework
+namespace moro.Framework.Data
 {
-	public class EmptyConverter : IValueConverter
+	public class DPropertyValueChangedEventArgs : EventArgs
 	{
-		public object Convert (object value)
-		{
-			return value;
-		}
+		public object OldValue { get; private set; }
+		public object NewValue { get; private set; }
 
-		public object ConvertBack (object value)
+		public DPropertyValueChangedEventArgs (object oldValue, object newValue)
 		{
-			return value;
+			OldValue = oldValue;
+			NewValue = newValue;
+		}
+	}
+
+	public class DPropertyValueChangedEventArgs<T> : EventArgs
+	{
+		public T OldValue { get; private set; }
+		public T NewValue { get; private set; }
+
+		public DPropertyValueChangedEventArgs (T oldValue, T newValue)
+		{
+			OldValue = oldValue;
+			NewValue = newValue;
 		}
 	}
 }

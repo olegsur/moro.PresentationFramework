@@ -1,4 +1,6 @@
 using System;
+using moro.Framework.Data;
+
 namespace moro.Framework
 {
 	public class Control : FrameworkElement

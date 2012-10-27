@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{49DA0351-1DBC-45D8-B8EF-5F7FF8BAF354}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>moro.Framework.Data</RootNamespace>
+    <AssemblyName>moro.Framework.Data</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="DependencyObject.cs" />
+    <Compile Include="IDependencyProperty.cs" />
+    <Compile Include="DependencyProperty.cs" />
+    <Compile Include="DPropertyValueChangedEventArgs.cs" />
+    <Compile Include="Binding.cs" />
+    <Compile Include="BindingExpression.cs" />
+    <Compile Include="IValueConverter.cs" />
+    <Compile Include="EmptyConverter.cs" />
+    <Compile Include="PathExpression.cs" />
+    <Compile Include="SelfExpression.cs" />
+    <Compile Include="PropertyExpression.cs" />
+    <Compile Include="IAttachedPropertiesContainer.cs" />
+    <Compile Include="BindingOperations.cs" />
+    <Compile Include="AttachedPropertyExpression.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

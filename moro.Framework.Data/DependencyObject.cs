@@ -1,5 +1,5 @@
 //
-// SelfExpression.cs
+// DependencyObject.cs
 //
 // Author:
 //       Oleg Sur <oleg.sur@gmail.com>
@@ -24,19 +24,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Collections.Generic;
 
-namespace moro.Framework
+namespace moro.Framework.Data
 {
-	public class SelfExpression : BindingExpression
+	public class DependencyObject
 	{
-		private readonly DependencyProperty<object> item;
+		private Dictionary<string, IDependencyProperty> properties = new Dictionary<string, IDependencyProperty> ();
 
-		public SelfExpression (object obj)
+		public DependencyObject ()
 		{
-			item = BuildProperty<object> ("Item");
-			item.Value = obj;
+		}
 
-			Property = item;
+		protected DependencyProperty<T> BuildProperty<T> (string name)
+		{
+			var result = new DependencyProperty<T> ();
+
+			properties.Add (name, result);
+
+			return result;
+		}
+
+		public IDependencyProperty GetProperty (string name)
+		{
+			IDependencyProperty result;
+
+			properties.TryGetValue (name, out result);
+
+			return result;
 		}
 	}
 }

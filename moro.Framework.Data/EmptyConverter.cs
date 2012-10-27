@@ -1,5 +1,5 @@
 //
-// BindingExpression.cs
+// EmptyConverter.cs
 //
 // Author:
 //       Oleg Sur <oleg.sur@gmail.com>
@@ -25,21 +25,18 @@
 // THE SOFTWARE.
 using System;
 
-namespace moro.Framework
+namespace moro.Framework.Data
 {
-	public abstract class BindingExpression : DependencyObject
+	public class EmptyConverter : IValueConverter
 	{
-		private readonly DependencyProperty<IDependencyProperty> property;
-
-		public IDependencyProperty Property { 
-			get { return property.Value;}
-			protected set { property.Value = value; }
+		public object Convert (object value)
+		{
+			return value;
 		}
 
-
-		public BindingExpression ()
+		public object ConvertBack (object value)
 		{
-			property = BuildProperty<IDependencyProperty> ("Property");
+			return value;
 		}
 	}
 }

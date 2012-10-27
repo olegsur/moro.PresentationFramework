@@ -1,5 +1,5 @@
 //
-// IAttachedPropertiesContainer.cs
+// SelfExpression.cs
 //
 // Author:
 //       Oleg Sur <oleg.sur@gmail.com>
@@ -25,24 +25,19 @@
 // THE SOFTWARE.
 using System;
 
-namespace moro.Framework
+namespace moro.Framework.Data
 {
-	public interface IAttachedPropertiesContainer
+	public class SelfExpression : BindingExpression
 	{
-		event EventHandler<ItemEventArgs> AddedItem;
-		event EventHandler<ItemEventArgs> RemovedItem;
+		private readonly DependencyProperty<object> item;
 
-		IDependencyProperty GetProperty (object item, string propertyName);
-	}
-
-	public class ItemEventArgs : EventArgs
-	{
-		public object Item { get; private set; }
-
-		public ItemEventArgs (object item)
+		public SelfExpression (object obj)
 		{
-			Item = item;
-		}		
+			item = BuildProperty<object> ("Item");
+			item.Value = obj;
+
+			Property = item;
+		}
 	}
 }
 

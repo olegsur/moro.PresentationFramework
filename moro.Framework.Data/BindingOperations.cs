@@ -1,5 +1,5 @@
 //
-// DPropertyValueChangedEventArgs.cs
+// BindingOperations.cs
 //
 // Author:
 //       Oleg Sur <oleg.sur@gmail.com>
@@ -24,30 +24,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Linq;
+using moro.Framework.Data;
 
-namespace moro.Framework
+namespace moro.Framework.Data
 {
-	public class DPropertyValueChangedEventArgs : EventArgs
+	public static class BindingOperations
 	{
-		public object OldValue { get; private set; }
-		public object NewValue { get; private set; }
-
-		public DPropertyValueChangedEventArgs (object oldValue, object newValue)
+		public static void SetBinding (IDependencyProperty source, IDependencyProperty target, IValueConverter converter = null)
 		{
-			OldValue = oldValue;
-			NewValue = newValue;
+			new Binding (new PropertyExpression (source), new PropertyExpression (target), converter ?? new EmptyConverter ());
 		}
-	}
 
-	public class DPropertyValueChangedEventArgs<T> : EventArgs
-	{
-		public T OldValue { get; private set; }
-		public T NewValue { get; private set; }
-
-		public DPropertyValueChangedEventArgs (T oldValue, T newValue)
+		public static void SetBinding (DependencyObject source, string path, IDependencyProperty target, IValueConverter converter = null)
 		{
-			OldValue = oldValue;
-			NewValue = newValue;
+			var paths = path.Split ('.');
+
+			BindingExpression expression = new PropertyExpression (source.GetProperty (paths [0]));
+
+			foreach (var p in paths.Skip(1)) {
+				expression = new PathExpression (expression, p);
+			}
+
+			new Binding (expression, new PropertyExpression (target), converter ?? new EmptyConverter ());
+		}
+
+		public static void SetBinding (IDependencyProperty source, IAttachedPropertiesContainer container, object item, string propertyName, IValueConverter converter = null)
+		{
+			var self = new SelfExpression (container);
+
+			new Binding (new PropertyExpression (source), new AttachedPropertyExpression (self, item, propertyName), converter ?? new EmptyConverter ());
 		}
 	}
 }

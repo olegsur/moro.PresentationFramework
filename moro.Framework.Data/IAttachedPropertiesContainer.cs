@@ -1,5 +1,5 @@
 //
-// DataContextBinding.cs
+// IAttachedPropertiesContainer.cs
 //
 // Author:
 //       Oleg Sur <oleg.sur@gmail.com>
@@ -25,15 +25,24 @@
 // THE SOFTWARE.
 using System;
 
-namespace GMathCad.UI.Framework
+namespace moro.Framework.Data
 {
-	public class DataContextBinding
+	public interface IAttachedPropertiesContainer
 	{
-		public string Path { get; set; }
+		event EventHandler<ItemEventArgs> AddedItem;
+		event EventHandler<ItemEventArgs> RemovedItem;
 
-		public DataContextBinding ()
+		IDependencyProperty GetProperty (object item, string propertyName);
+	}
+
+	public class ItemEventArgs : EventArgs
+	{
+		public object Item { get; private set; }
+
+		public ItemEventArgs (object item)
 		{
-		}
+			Item = item;
+		}		
 	}
 }
 

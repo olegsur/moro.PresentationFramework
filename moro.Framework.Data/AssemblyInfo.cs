@@ -1,5 +1,5 @@
 //
-// DependencyObject.cs
+// AssemblyInfo.cs
 //
 // Author:
 //       Oleg Sur <oleg.sur@gmail.com>
@@ -23,36 +23,30 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
-using System.Collections.Generic;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
-namespace moro.Framework
-{
-	public class DependencyObject
-	{
-		private Dictionary<string, IDependencyProperty> properties = new Dictionary<string, IDependencyProperty> ();
+// Information about this assembly is defined by the following attributes. 
+// Change them to the values specific to your project.
 
-		public DependencyObject ()
-		{
-		}
+[assembly: AssemblyTitle("moro.Framework.Data")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("")]
+[assembly: AssemblyCopyright("Oleg Sur")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
 
-		protected DependencyProperty<T> BuildProperty<T> (string name)
-		{
-			var result = new DependencyProperty<T> ();
+// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
+// The form "{Major}.{Minor}.*" will automatically update the build and revision,
+// and "{Major}.{Minor}.{Build}.*" will update just the revision.
 
-			properties.Add (name, result);
+[assembly: AssemblyVersion("1.0.*")]
 
-			return result;
-		}
+// The following attributes are used to specify the signing key for the assembly, 
+// if desired. See the Mono documentation for more information about signing.
 
-		public IDependencyProperty GetProperty (string name)
-		{
-			IDependencyProperty result;
-
-			properties.TryGetValue (name, out result);
-
-			return result;
-		}
-	}
-}
+//[assembly: AssemblyDelaySign(false)]
+//[assembly: AssemblyKeyFile("")]
 

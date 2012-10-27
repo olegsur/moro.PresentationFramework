@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 
 using System;
+using moro.Framework.Data;
 
 namespace moro.Framework
 {

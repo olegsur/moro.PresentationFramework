@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System;
 
-namespace moro.Framework
+namespace moro.Framework.Data
 {
 	public class Binding
 	{

@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
+using moro.Framework.Data;
 
 namespace moro.Framework
 {

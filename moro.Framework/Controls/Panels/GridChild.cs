@@ -24,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using moro.Framework.Data;
 
 namespace moro.Framework
 {
@@ -47,9 +48,9 @@ namespace moro.Framework
 			Content.Measure (availableSize);
 			
 			var margin = Content.GetProperty ("Margin") != null ? 
-				(Thickness)Content.GetProperty ("Margin").Value : new Thickness(0);
+				(Thickness)Content.GetProperty ("Margin").Value : new Thickness (0);
 			
-			return new Size(Content.DesiredSize.Width + margin.Left + margin.Right, Content.DesiredSize.Height + margin.Bottom + margin.Top);
+			return new Size (Content.DesiredSize.Width + margin.Left + margin.Right, Content.DesiredSize.Height + margin.Bottom + margin.Top);
 		}
 		
 		protected override void ArrangeOverride (Size finalSize)
@@ -80,7 +81,7 @@ namespace moro.Framework
 				break;			
 			}			
 			
-			switch (verticalAligment){
+			switch (verticalAligment) {
 			case VerticalAlignment.Bottom:
 				y = Height - height;
 				break;

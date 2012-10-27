@@ -1,5 +1,5 @@
 //
-// IValueConverter.cs
+// BindingExpression.cs
 //
 // Author:
 //       Oleg Sur <oleg.sur@gmail.com>
@@ -25,12 +25,22 @@
 // THE SOFTWARE.
 using System;
 
-namespace moro.Framework
+namespace moro.Framework.Data
 {
-	public interface IValueConverter
+	public abstract class BindingExpression : DependencyObject
 	{
-		object Convert (object value);
-		object ConvertBack (object value);
+		private readonly DependencyProperty<IDependencyProperty> property;
+
+		public IDependencyProperty Property { 
+			get { return property.Value;}
+			protected set { property.Value = value; }
+		}
+
+
+		public BindingExpression ()
+		{
+			property = BuildProperty<IDependencyProperty> ("Property");
+		}
 	}
 }
 
