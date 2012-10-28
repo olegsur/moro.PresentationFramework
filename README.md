@@ -1,2 +1,1 @@
-moro
-====
+The moro project is an attempt to create a similar framework as WPF in Linux.  The moro.fkalc (a project for editing and evaluating formulas) has been chosen as a project for testing rendering and layout engine, binding mechanisms, styles and templates, … 
