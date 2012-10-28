@@ -32,9 +32,9 @@ namespace moro.Framework
 	{
 		public event KeyPressEventHandler KeyPressEvent;
 		
-		public WidgetKeyboardInputProvider (ElementHost elementHost)
+		public WidgetKeyboardInputProvider (Widget widget)
 		{
-			elementHost.Host.KeyPressEvent += HandleKeyPressEvent;
+			widget.KeyPressEvent += HandleKeyPressEvent;
 		}
 
 		[GLib.ConnectBefore] 

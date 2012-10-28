@@ -39,6 +39,7 @@ namespace moro.Framework
 		
 		public void Add (Adorner adorner)
 		{
+			AddVisualChild (adorner);
 			adorners.Add (adorner);
 		}
 
@@ -52,7 +53,6 @@ namespace moro.Framework
 
 			if (visual.VisaulParent == null)
 				return null;
-
 
 			return GetAdornerLayer (visual.VisaulParent);
 		}

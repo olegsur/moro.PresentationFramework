@@ -34,6 +34,7 @@ namespace moro.Framework
 		public AdornerDecorator ()
 		{
 			AdornerLayer = new AdornerLayer ();
+			AddVisualChild (AdornerLayer);
 		}	
 
 		protected override Size MeasureOverride (Size availableSize)

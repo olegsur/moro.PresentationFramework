@@ -36,27 +36,25 @@ namespace moro.Framework
 		
 		public Visual RootElement { get; private set; }
 		
-		public WidgetMouseInputProvider (ElementHost elementHost)
+		public WidgetMouseInputProvider (Widget widget, Visual rootElement)
 		{
-			elementHost.Host.ButtonPressEvent += HandleWidgetButtonPressEvent;	
-			elementHost.Host.MotionNotifyEvent += HandleWidgetMotionNotifyEvent;
+			widget.ButtonPressEvent += HandleWidgetButtonPressEvent;	
+			widget.MotionNotifyEvent += HandleWidgetMotionNotifyEvent;
 			
-			RootElement = elementHost.Element;
+			RootElement = rootElement;
 		}		
 
 		private void HandleWidgetButtonPressEvent (object o, ButtonPressEventArgs args)
 		{
-			if (ButtonPressEvent != null)
-			{
-				ButtonPressEvent(this, args);				
+			if (ButtonPressEvent != null) {
+				ButtonPressEvent (this, args);				
 			}
 		}
 		
 		private void HandleWidgetMotionNotifyEvent (object o, MotionNotifyEventArgs args)
 		{
-			if (MotionNotifyEvent != null)
-			{
-				MotionNotifyEvent(this, args);
+			if (MotionNotifyEvent != null) {
+				MotionNotifyEvent (this, args);
 			}			
 		}
 	}

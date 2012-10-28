@@ -26,38 +26,36 @@
 using System;
 namespace moro.Framework
 {
-	public class GtkSurface
+	public class GtkSurface : Gtk.Window, IElementHost
 	{
 		public double Height { get; private set; }
 		public double Width { get; private set; }
-		
-		private Gtk.Window Window { get; set; }		
+
 		private Window Owner { get; set; }
+
+		Visual IElementHost.Child { get { return Owner; } }
 		
-		public GtkSurface (Window owner)
+		public GtkSurface (Window owner): base (Gtk.WindowType.Toplevel)
 		{
 			Owner = owner;
 			
 			Width = owner.WidthRequest ?? 100;
 			Height = owner.HeightRequest ?? 50;
-			
-			Window = new Gtk.Window (Gtk.WindowType.Toplevel)
-			{
-				DefaultWidth = (int)Width,
-				DefaultHeight = (int)Height,				
-				Decorated = false,
-				Events = ((global::Gdk.EventMask)(3334))
-			};
-			
-			Window.ExposeEvent += OnExposeEvent;			
-			
-			var elementHost = new ElementHost (Window, Owner);
-			
-			Keyboard.Device.RegisterKeyboardInputProvider (new WidgetKeyboardInputProvider (elementHost));
-			Mouse.Device.RegistedMouseInputProvider (new WidgetMouseInputProvider (elementHost));
+
+			DefaultWidth = (int)Width;
+			DefaultHeight = (int)Height;
+			Decorated = false;
+			Events = ((global::Gdk.EventMask)(3334));
+						
+			ExposeEvent += OnExposeEvent;			
 
 			Owner.Closed += HandleClosed;
 			Owner.Showed += HandleShowed;
+
+			Keyboard.Device.RegisterKeyboardInputProvider (new WidgetKeyboardInputProvider (this));
+			Mouse.Device.RegistedMouseInputProvider (new WidgetMouseInputProvider (this, owner));
+
+			Application.Current.RegisterRoot (this);
 		}
 						
 		public void Resize (Size size)
@@ -65,17 +63,17 @@ namespace moro.Framework
 			Width = size.Width;
 			Height = size.Height;
 			
-			Window.Resize ((int)Width, (int)Height);
+			Resize ((int)Width, (int)Height);
 		}
 		
 		protected void OnExposeEvent (object o, Gtk.ExposeEventArgs args)
 		{
-			using (var cr = Gdk.CairoHelper.Create(Window.GdkWindow)) {				
+			using (var cr = Gdk.CairoHelper.Create(GdkWindow)) {				
 			
 				var width = 0;
 				var height = 0;
 			
-				Window.GetSize (out width, out height);
+				GetSize (out width, out height);
 			
 				var size = new Size (width, height);
 			
@@ -87,7 +85,7 @@ namespace moro.Framework
 				
 		private void HandleClosed (object sender, EventArgs e)
 		{
-			Window.Destroy ();
+			Destroy ();
 		}
 
 		private void HandleShowed (object sender, EventArgs e)
@@ -98,7 +96,12 @@ namespace moro.Framework
 			Owner.Arrange (new Rect (Owner.DesiredSize));
 
 			Resize (new Size (Owner.Width, Owner.Height));
-			Window.Show ();
+			Show ();
+		}
+
+		public void Render ()
+		{
+			QueueDraw ();
 		}
 	}
 }

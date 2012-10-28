@@ -47,42 +47,42 @@ namespace moro.Framework
 			
 		public double GetLeft (UIElement element)
 		{
-			var el = children.FirstOrDefault (c => c.Content == element);
+			var child = children.FirstOrDefault (c => c.Content == element);
 			
-			if (el == null)
+			if (child == null)
 				return 0;
 			
-			return el.X;
+			return child.X;
 		}
 		
 		public void SetLeft (double left, UIElement element)
 		{
-			var el = children.FirstOrDefault (c => c.Content == element);
+			var child = children.FirstOrDefault (c => c.Content == element);
 			
-			if (el == null)
+			if (child == null)
 				return;
 			
-			el.X = left;
+			child.X = left;
 		}
 		
 		public double GetTop (UIElement element)
 		{
-			var el = children.FirstOrDefault (c => c.Content == element);
+			var child = children.FirstOrDefault (c => c.Content == element);
 			
-			if (el == null)
+			if (child == null)
 				return 0;
 			
-			return el.Y;
+			return child.Y;
 		}
 		
 		public void SetTop (double top, UIElement element)
 		{
-			var el = children.FirstOrDefault (c => c.Content == element);
+			var child = children.FirstOrDefault (c => c.Content == element);
 			
-			if (el == null)
+			if (child == null)
 				return;
 			
-			el.Y = top;
+			child.Y = top;
 		}
 
 		private void HandleCollectionChanged (object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

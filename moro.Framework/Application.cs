@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using moro.Framework.Data;
+using System.Linq;
 
 namespace moro.Framework
 {
@@ -36,13 +37,15 @@ namespace moro.Framework
 		
 		public Dictionary<object, object> Resources { get; private set; }
 		public Window MainWindow { get; private	set; }		
+		public IEnumerable<Window> Windows { get { return windows; } }
 				
 		internal static readonly bool IsInitialized = false;
 		
 		private IApplication aplication;
 		private readonly List<Window> windows = new List<Window> ();
-		
-		public IEnumerable<Window> Windows { get { return windows; } }
+		private readonly List<IElementHost> roots = new List<IElementHost> ();
+
+
 	
 		static Application ()
 		{	
@@ -236,6 +239,16 @@ namespace moro.Framework
 		{
 			windows.Remove (window);
 			aplication.UnregisterWindow (window);
+		}
+
+		public void RegisterRoot (IElementHost elementHost)
+		{
+			roots.Add (elementHost);
+		}
+
+		public IElementHost GetRoot (Visual visual)
+		{
+			return roots.FirstOrDefault (r => r.Child == visual);
 		}
 	}
 }

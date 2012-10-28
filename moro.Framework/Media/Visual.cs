@@ -68,7 +68,7 @@ namespace moro.Framework
 		public Point PointToScreen (Point point)
 		{
 			var result = point;
-			foreach (var visual in GetVisualBranch(this)) {
+			foreach (var visual in VisualTreeHelper.GetVisualBranch(this)) {
 				result = visual.VisualTransform.TransformPoint (result);
 			}
 
@@ -78,22 +78,26 @@ namespace moro.Framework
 		public Point PointFromScreen (Point point)
 		{
 			var result = point;
-			foreach (var visual in GetVisualBranch(this).Reverse()) {
+			foreach (var visual in VisualTreeHelper.GetVisualBranch(this).Reverse()) {
 				result = visual.VisualTransform.Inverse.TransformPoint (result);
 			}
 
 			return result;
 		}
 
-		private IEnumerable<Visual> GetVisualBranch (Visual visual)
+		protected DependencyProperty<T> BuildVisualProperty<T> (string name)
 		{
-			yield return visual;
-			
-			if (visual.VisaulParent != null) {
-				foreach (var parent in GetVisualBranch(visual.VisaulParent)) {
-					yield return parent;
-				}
-			}
+			var property = BuildProperty<T> (name);
+			((IDependencyProperty)property).DependencyPropertyValueChanged += HandleDependencyPropertyValueChanged;
+			return property;
+		}
+		
+		private void HandleDependencyPropertyValueChanged (object sender, DPropertyValueChangedEventArgs e)
+		{
+			var visualRoot = VisualTreeHelper.GetVisualBranch (this).Last ();
+			var root = Application.Current.GetRoot (visualRoot);
+			if (root != null)
+				root.Render ();
 		}
 	}
 }

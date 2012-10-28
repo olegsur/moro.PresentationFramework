@@ -77,8 +77,6 @@ namespace moro.Framework.Data
 					Value = (T)value;
 			}
 		}
-
-
 	}
 }
 

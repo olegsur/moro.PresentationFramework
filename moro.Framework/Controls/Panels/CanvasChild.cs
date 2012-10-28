@@ -46,8 +46,8 @@ namespace moro.Framework
 
 		public CanvasChild (UIElement child)
 		{
-			x = BuildProperty<double> ("X");
-			y = BuildProperty<double> ("Y");
+			x = BuildVisualProperty<double> ("X");
+			y = BuildVisualProperty<double> ("Y");
 
 			Content = child;
 

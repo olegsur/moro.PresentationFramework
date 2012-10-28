@@ -75,7 +75,7 @@ namespace moro.Framework
 		{
 			InputBindings = new List<KeyBinding> ();
 
-			visibility = BuildProperty<Visibility> ("Visibility");
+			visibility = BuildVisualProperty<Visibility> ("Visibility");
 			focusable = BuildProperty<bool> ("Focusable");
 
 			Mouse.PreviewButtonPressEvent += HandlePreviewButtonPressEvent;
