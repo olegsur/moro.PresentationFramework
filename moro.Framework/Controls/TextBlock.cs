@@ -58,10 +58,10 @@ namespace moro.Framework
 		
 		public TextBlock ()
 		{
-			text = BuildProperty<string> ("Text");
-			fontFamily = BuildProperty<string> ("FontFamily");
-			fontSize = BuildProperty<double> ("FontSize");
-			foreground = BuildProperty<Color> ("Foreground");			
+			text = BuildVisualProperty<string> ("Text");
+			fontFamily = BuildVisualProperty<string> ("FontFamily");
+			fontSize = BuildVisualProperty<double> ("FontSize");
+			foreground = BuildVisualProperty<Color> ("Foreground");			
 			
 			StyleHelper.ApplyStyle (this, typeof(TextBlock));			
 		}	

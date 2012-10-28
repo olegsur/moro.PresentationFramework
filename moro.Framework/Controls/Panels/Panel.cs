@@ -37,7 +37,8 @@ namespace moro.Framework
 		public Panel ()
 		{	
 			Children = new ObservableCollection<UIElement> ();
-		}		
+			Children.CollectionChanged += HandleCollectionChanged;
+		}
 
 		public override int VisualChildrenCount {
 			get {
@@ -49,6 +50,14 @@ namespace moro.Framework
 		{
 			return Children [0];
 		}
+
+		private void HandleCollectionChanged (object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		{
+			var visualRoot = VisualTreeHelper.GetVisualBranch (this).Last ();
+			var root = Application.Current.GetRoot (visualRoot);
+			if (root != null)
+				root.Render ();
+		}		
 	}
 }
 
