@@ -25,7 +25,6 @@
 // THE SOFTWARE.
 
 using System;
-using Gtk;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -33,11 +32,11 @@ namespace moro.Framework
 {
 	public class MouseDevice
 	{
-		public RoutedEvent<ButtonPressEventArgs> PreviewButtonPressEvent { get; private set; }
-		public RoutedEvent<ButtonPressEventArgs> ButtonPressEvent { get; private set; }
+		public RoutedEvent<MouseButtonEventArgs> PreviewButtonPressEvent { get; private set; }
+		public RoutedEvent<MouseButtonEventArgs> ButtonPressEvent { get; private set; }
 		
-		public RoutedEvent<MotionNotifyEventArgs> PreviewMotionNotifyEvent { get; private set; }
-		public RoutedEvent<MotionNotifyEventArgs> MotionNotifyEvent { get; private set; }
+		public RoutedEvent<MouseButtonEventArgs> PreviewMotionNotifyEvent { get; private set; }
+		public RoutedEvent<MouseButtonEventArgs> MotionNotifyEvent { get; private set; }
 		
 		public RoutedEvent<EventArgs> MouseEnterEvent { get; private set; }
 		public RoutedEvent<EventArgs> MouseLeaveEvent { get; private set; }
@@ -45,14 +44,14 @@ namespace moro.Framework
 		private Visual targetElement;
 		
 		private List<IMouseInputProvider> providers = new List<IMouseInputProvider> ();
-		
+
 		public MouseDevice ()
 		{
-			PreviewButtonPressEvent = new TunnelingEvent<ButtonPressEventArgs> ();
-			ButtonPressEvent = new BubblingEvent<ButtonPressEventArgs> (); 
+			PreviewButtonPressEvent = new TunnelingEvent<MouseButtonEventArgs> ();
+			ButtonPressEvent = new BubblingEvent<MouseButtonEventArgs> (); 
 
-			PreviewMotionNotifyEvent = new TunnelingEvent<MotionNotifyEventArgs> ();
-			MotionNotifyEvent = new BubblingEvent<MotionNotifyEventArgs> ();
+			PreviewMotionNotifyEvent = new TunnelingEvent<MouseButtonEventArgs> ();
+			MotionNotifyEvent = new BubblingEvent<MouseButtonEventArgs> ();
 
 			MouseEnterEvent = new DirectEvent<EventArgs> ();
 			MouseLeaveEvent = new DirectEvent<EventArgs> ();
@@ -91,26 +90,40 @@ namespace moro.Framework
 			providers.Remove (provider);			
 		}
 
-		private void HandleProviderButtonPressEvent (object o, ButtonPressEventArgs args)
+		public Point GetPosition (Visual visual)
+		{
+			var root = VisualTreeHelper.GetVisualBranch (visual).Last ();
+
+			var provider = providers.FirstOrDefault (p => p.RootElement == root);
+			
+			if (provider == null)
+				return new Point ();
+
+			return visual.PointFromScreen (new Point (provider.X, provider.Y));
+		}
+
+		private void HandleProviderButtonPressEvent (object o, MouseButtonEventArgs args)
 		{
 			RaisePreviewButtonPressEvent (args);
 			RaiseButtonPressEvent (args);
 		}
 		
-		private void HandleMotionNotifyEvent (object o, MotionNotifyEventArgs args)
+		private void HandleMotionNotifyEvent (object o, MouseButtonEventArgs args)
 		{
 			var provider = providers.FirstOrDefault (p => p == o);
 			
 			if (provider == null)
 				return;
 			
-			TargetElement = VisualTreeHelper.HitTest (new Point (args.Event.X, args.Event.Y), provider.RootElement);
-			
-			RaisePreviewMotionNotifyEvent (args);
-			RaiseMotionNotifyEvent (args);
+			TargetElement = VisualTreeHelper.HitTest (new Point (provider.X, provider.Y), provider.RootElement);
+
+			var eventArgs = new MouseButtonEventArgs ();
+
+			RaisePreviewMotionNotifyEvent (eventArgs);
+			RaiseMotionNotifyEvent (eventArgs);
 		}
 		
-		private void RaisePreviewButtonPressEvent (ButtonPressEventArgs args)
+		private void RaisePreviewButtonPressEvent (MouseButtonEventArgs args)
 		{
 			if (TargetElement == null)
 				return;
@@ -118,7 +131,7 @@ namespace moro.Framework
 			PreviewButtonPressEvent.RaiseEvent (TargetElement, args);
 		}	
 		
-		private void RaiseButtonPressEvent (ButtonPressEventArgs args)
+		private void RaiseButtonPressEvent (MouseButtonEventArgs args)
 		{
 			if (TargetElement == null)
 				return;
@@ -126,7 +139,7 @@ namespace moro.Framework
 			ButtonPressEvent.RaiseEvent (TargetElement, args);
 		}
 		
-		private void RaisePreviewMotionNotifyEvent (MotionNotifyEventArgs args)
+		private void RaisePreviewMotionNotifyEvent (MouseButtonEventArgs args)
 		{
 			if (TargetElement == null)
 				return;
@@ -134,7 +147,7 @@ namespace moro.Framework
 			PreviewMotionNotifyEvent.RaiseEvent (TargetElement, args);
 		}	
 		
-		private void RaiseMotionNotifyEvent (MotionNotifyEventArgs args)
+		private void RaiseMotionNotifyEvent (MouseButtonEventArgs args)
 		{
 			if (TargetElement == null)
 				return;

@@ -143,6 +143,7 @@
     <Compile Include="Gtk\WidgetKeyboardInputProvider.cs" />
     <Compile Include="Gtk\WidgetMouseInputProvider.cs" />
     <Compile Include="IElementHost.cs" />
+    <Compile Include="Input\MouseButtonEventArgs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

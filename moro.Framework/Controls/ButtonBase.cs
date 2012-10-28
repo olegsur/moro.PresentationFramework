@@ -36,7 +36,7 @@ namespace moro.Framework
 			ButtonPressEvent += HandleButtonPressEvent;
 		}
 
-		private void HandleButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		private void HandleButtonPressEvent (object o, MouseButtonEventArgs args)
 		{
 			RaiseClick ();
 		}

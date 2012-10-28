@@ -25,7 +25,6 @@
 // THE SOFTWARE.
 
 using System;
-using Gtk;
 
 namespace moro.Framework
 {
@@ -38,22 +37,22 @@ namespace moro.Framework
 			Device = new MouseDevice ();
 		}
 		
-		public static event EventHandler<ButtonPressEventArgs> PreviewButtonPressEvent {
+		public static event EventHandler<MouseButtonEventArgs> PreviewButtonPressEvent {
 			add { Device.PreviewButtonPressEvent.Event += value; }
 			remove { Device.PreviewButtonPressEvent.Event -= value; }
 		}
 		
-		public static event EventHandler<ButtonPressEventArgs> ButtonPressEvent {
+		public static event EventHandler<MouseButtonEventArgs> ButtonPressEvent {
 			add { Device.ButtonPressEvent.Event += value; }
 			remove { Device.ButtonPressEvent.Event -= value; }
 		}
 		
-		public static event EventHandler<MotionNotifyEventArgs> PreviewMotionNotifyEvent {
+		public static event EventHandler<MouseButtonEventArgs> PreviewMotionNotifyEvent {
 			add { Device.PreviewMotionNotifyEvent.Event += value; }
 			remove { Device.PreviewMotionNotifyEvent.Event -= value; }
 		}
 		
-		public static event EventHandler<MotionNotifyEventArgs> MotionNotifyEvent {
+		public static event EventHandler<MouseButtonEventArgs> MotionNotifyEvent {
 			add { Device.MotionNotifyEvent.Event += value; }
 			remove { Device.MotionNotifyEvent.Event -= value; }
 		}
@@ -66,6 +65,11 @@ namespace moro.Framework
 		public static event EventHandler<EventArgs> MouseLeaveEvent {
 			add { Device.MouseLeaveEvent.Event += value; }
 			remove { Device.MouseLeaveEvent.Event -= value; }
+		}
+
+		public static Point GetPosition (Visual visual)
+		{
+			return Device.GetPosition (visual);
 		}
 	}
 }

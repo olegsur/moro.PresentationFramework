@@ -34,9 +34,9 @@ namespace moro.Framework
 {
 	public class UIElement : Visual
 	{		
-		public event ButtonPressEventHandler ButtonPressEvent;
-		public event MotionNotifyEventHandler PreviewMotionNotifyEvent;
-		public event MotionNotifyEventHandler MotionNotifyEvent;
+		public event EventHandler<MouseButtonEventArgs> ButtonPressEvent;
+		public event EventHandler<MouseButtonEventArgs> PreviewMotionNotifyEvent;
+		public event EventHandler<MouseButtonEventArgs> MotionNotifyEvent;
 		public event EventHandler MouseEnterEvent;
 		public event EventHandler MouseLeaveEvent;
 		public event KeyPressEventHandler PreviewKeyPressEvent;
@@ -146,7 +146,7 @@ namespace moro.Framework
 		{			
 		}
 				
-		private void HandlePreviewButtonPressEvent (object o, ButtonPressEventArgs args)
+		private void HandlePreviewButtonPressEvent (object o, MouseButtonEventArgs args)
 		{
 			lookingFocus = true;
 			
@@ -156,7 +156,7 @@ namespace moro.Framework
 			Keyboard.Focus (this);
 		}
 
-		private void HandleButtonPressEvent (object sender, ButtonPressEventArgs e)
+		private void HandleButtonPressEvent (object sender, MouseButtonEventArgs e)
 		{
 			if (lookingFocus && Focusable) {
 				Keyboard.Focus (this);
@@ -167,7 +167,7 @@ namespace moro.Framework
 			OnButtonPressEvent (sender, e);	
 		}
 				
-		protected virtual void OnButtonPressEvent (object o, ButtonPressEventArgs args)
+		protected virtual void OnButtonPressEvent (object o, MouseButtonEventArgs args)
 		{
 			RaiseButtonPressEvent (args);
 		}
@@ -188,12 +188,12 @@ namespace moro.Framework
 			RaiseKeyPressEvent (args);
 		}
 				
-		protected virtual void OnPreviewMotionNotifyEvent (object o, MotionNotifyEventArgs args)
+		protected virtual void OnPreviewMotionNotifyEvent (object o, MouseButtonEventArgs args)
 		{
 			RaisePreviewMotionNotifyEvent (args);
 		}
 		
-		protected virtual void OnMotionNotifyEvent (object o, MotionNotifyEventArgs args)
+		protected virtual void OnMotionNotifyEvent (object o, MouseButtonEventArgs args)
 		{
 			RaiseMotionNotifyEvent (args);
 		}
@@ -226,21 +226,21 @@ namespace moro.Framework
 			}
 		}
 		
-		private void RaiseButtonPressEvent (ButtonPressEventArgs args)
+		private void RaiseButtonPressEvent (MouseButtonEventArgs args)
 		{
 			if (ButtonPressEvent != null) {
 				ButtonPressEvent (this, args);
 			}
 		}
 		
-		private void RaisePreviewMotionNotifyEvent (MotionNotifyEventArgs args)
+		private void RaisePreviewMotionNotifyEvent (MouseButtonEventArgs args)
 		{
 			if (PreviewMotionNotifyEvent != null) {
 				PreviewMotionNotifyEvent (this, args);
 			}
 		}
 		
-		private void RaiseMotionNotifyEvent (MotionNotifyEventArgs args)
+		private void RaiseMotionNotifyEvent (MouseButtonEventArgs args)
 		{
 			if (MotionNotifyEvent != null) {
 				MotionNotifyEvent (this, args);
