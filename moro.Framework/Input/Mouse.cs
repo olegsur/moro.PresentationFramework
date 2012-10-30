@@ -46,6 +46,16 @@ namespace moro.Framework
 			add { Device.ButtonPressEvent.Event += value; }
 			remove { Device.ButtonPressEvent.Event -= value; }
 		}
+
+		public static event EventHandler<MouseButtonEventArgs> PreviewButtonReleaseEvent {
+			add { Device.PreviewButtonReleaseEvent.Event += value; }
+			remove { Device.PreviewButtonReleaseEvent.Event -= value; }
+		}
+		
+		public static event EventHandler<MouseButtonEventArgs> ButtonReleaseEvent {
+			add { Device.ButtonReleaseEvent.Event += value; }
+			remove { Device.ButtonReleaseEvent.Event -= value; }
+		}
 		
 		public static event EventHandler<MouseButtonEventArgs> PreviewMotionNotifyEvent {
 			add { Device.PreviewMotionNotifyEvent.Event += value; }

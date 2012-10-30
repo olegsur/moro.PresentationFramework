@@ -67,18 +67,34 @@ namespace moro.Framework
 
 		public Point PointToScreen (Point point)
 		{
+			var visualBranch = VisualTreeHelper.GetVisualBranch (this);
+
+			var root = Application.Current.GetRoot (visualBranch.Last ());
+			if (root == null)
+				return new Point ();
+
+			var rootPosition = root.GetPosition ();
+
 			var result = point;
-			foreach (var visual in VisualTreeHelper.GetVisualBranch(this)) {
+			foreach (var visual in visualBranch) {
 				result = visual.VisualTransform.TransformPoint (result);
 			}
 
-			return result;
+			return new Point (result.X + rootPosition.X, result.Y + rootPosition.Y);
 		}
 
 		public Point PointFromScreen (Point point)
 		{
-			var result = point;
-			foreach (var visual in VisualTreeHelper.GetVisualBranch(this).Reverse()) {
+			var visualBranch = VisualTreeHelper.GetVisualBranch (this).Reverse ();
+
+			var root = Application.Current.GetRoot (visualBranch.First ());
+			if (root == null)
+				return new Point ();
+
+			var rootPosition = root.GetPosition ();
+
+			var result = new Point (point.X - rootPosition.X, point.Y - rootPosition.Y);
+			foreach (var visual in visualBranch) {
 				result = visual.VisualTransform.Inverse.TransformPoint (result);
 			}
 

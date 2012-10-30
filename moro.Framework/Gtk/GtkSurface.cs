@@ -24,6 +24,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using moro.Framework.Data;
+
 namespace moro.Framework
 {
 	public class GtkSurface : Gtk.Window, IElementHost
@@ -38,14 +40,21 @@ namespace moro.Framework
 		public GtkSurface (Window owner): base (Gtk.WindowType.Toplevel)
 		{
 			Owner = owner;
-			
+
+			Move ((int)Owner.Left, (int)Owner.Top);
+
 			Width = owner.WidthRequest ?? 100;
 			Height = owner.HeightRequest ?? 50;
 
 			DefaultWidth = (int)Width;
 			DefaultHeight = (int)Height;
 			Decorated = false;
-			Events = ((global::Gdk.EventMask)(3334));
+			Events = Gdk.EventMask.ExposureMask
+				| Gdk.EventMask.ButtonPressMask
+				| Gdk.EventMask.ButtonReleaseMask
+				| Gdk.EventMask.PointerMotionMask
+				| Gdk.EventMask.KeyPressMask
+				| Gdk.EventMask.KeyReleaseMask;  
 						
 			ExposeEvent += OnExposeEvent;			
 
@@ -56,6 +65,14 @@ namespace moro.Framework
 			Mouse.Device.RegistedMouseInputProvider (new WidgetMouseInputProvider (this, owner));
 
 			Application.Current.RegisterRoot (this);
+
+			owner.GetProperty ("Left").DependencyPropertyValueChanged += HandlePosionChanged;
+			owner.GetProperty ("Top").DependencyPropertyValueChanged += HandlePosionChanged;
+		}
+
+		private void HandlePosionChanged (object sender, DPropertyValueChangedEventArgs e)
+		{		
+			Move ((int)Owner.Left, (int)Owner.Top);
 		}
 						
 		public void Resize (Size size)
@@ -103,6 +120,16 @@ namespace moro.Framework
 		{
 			QueueDraw ();
 		}
+
+		public Point GetPosition ()
+		{
+			int x;
+			int y;
+
+			base.GetPosition (out x, out y);
+
+			return new Point (x, y);
+		}	
 	}
 }
 

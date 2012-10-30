@@ -44,9 +44,7 @@ namespace moro.Framework
 		private IApplication aplication;
 		private readonly List<Window> windows = new List<Window> ();
 		private readonly List<IElementHost> roots = new List<IElementHost> ();
-
-
-	
+			
 		static Application ()
 		{	
 			Current = new Application ();
@@ -127,20 +125,19 @@ namespace moro.Framework
 			
 			return border;		
 		}
-
-				
+						
 		private static UIElement WindowTemplate (Window element)
 		{
 			var grid = new Grid () {HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch};
 			grid.RowDefinitions.Add (new RowDefinition () {Height = GridLength.Auto});
 			grid.RowDefinitions.Add (new RowDefinition ());			
 			grid.ColumnDefinitions.Add (new ColumnDefinition ());
-			
+									
 			var titleGrid = new Grid () {HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch};
 			titleGrid.RowDefinitions.Add (new RowDefinition ());
 			titleGrid.ColumnDefinitions.Add (new ColumnDefinition ());
 			titleGrid.ColumnDefinitions.Add (new ColumnDefinition () { Width = GridLength.Auto });
-			
+									
 			var title = new TextBlock ();		
 			title.Foreground = Colors.White;
 			title.HorizontalAlignment = HorizontalAlignment.Center;
@@ -148,16 +145,29 @@ namespace moro.Framework
 						
 			var closeButton = CloseButton ();			
 			closeButton.Click += (sender, e) => element.Close ();
-			
+
 			titleGrid.Children.Add (title);			
 			titleGrid.Children.Add (closeButton);
 			
 			titleGrid.SetColumn (0, title);
 			titleGrid.SetColumn (1, closeButton);
+
+			var titleThumb = new Thumb () 
+			{
+				HorizontalAlignment = HorizontalAlignment.Stretch, 
+				VerticalAlignment = VerticalAlignment.Stretch,
+				Template = new ControlTemplate(t => titleGrid)
+			};
+			
+			titleThumb.DragDelta += (sender, e) => 
+			{
+				element.Left += e.HorizontalChange;
+				element.Top += e.VerticalChange;
+			};
 			
 			var titleBorder = new Border ();
 			titleBorder.Background = GetTitleBrush ();
-			titleBorder.Child = titleGrid;
+			titleBorder.Child = titleThumb;
 			titleBorder.Padding = new Thickness (3);
 									
 			grid.Children.Add (titleBorder);
@@ -176,8 +186,8 @@ namespace moro.Framework
 			grid.SetRow (1, border);
 			
 			return grid;		
-		}	
-		
+		}
+
 		private static LinearGradientBrush GetTitleBrush ()
 		{
 			var result = new LinearGradientBrush ();

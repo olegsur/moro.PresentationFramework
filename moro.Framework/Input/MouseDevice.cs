@@ -34,6 +34,9 @@ namespace moro.Framework
 	{
 		public RoutedEvent<MouseButtonEventArgs> PreviewButtonPressEvent { get; private set; }
 		public RoutedEvent<MouseButtonEventArgs> ButtonPressEvent { get; private set; }
+
+		public RoutedEvent<MouseButtonEventArgs> PreviewButtonReleaseEvent { get; private set; }
+		public RoutedEvent<MouseButtonEventArgs> ButtonReleaseEvent { get; private set; }
 		
 		public RoutedEvent<MouseButtonEventArgs> PreviewMotionNotifyEvent { get; private set; }
 		public RoutedEvent<MouseButtonEventArgs> MotionNotifyEvent { get; private set; }
@@ -49,6 +52,9 @@ namespace moro.Framework
 		{
 			PreviewButtonPressEvent = new TunnelingEvent<MouseButtonEventArgs> ();
 			ButtonPressEvent = new BubblingEvent<MouseButtonEventArgs> (); 
+
+			PreviewButtonReleaseEvent = new TunnelingEvent<MouseButtonEventArgs> ();
+			ButtonReleaseEvent = new BubblingEvent<MouseButtonEventArgs> (); 
 
 			PreviewMotionNotifyEvent = new TunnelingEvent<MouseButtonEventArgs> ();
 			MotionNotifyEvent = new BubblingEvent<MouseButtonEventArgs> ();
@@ -79,13 +85,16 @@ namespace moro.Framework
 		public void RegistedMouseInputProvider (IMouseInputProvider provider)
 		{
 			provider.ButtonPressEvent += HandleProviderButtonPressEvent;
+			provider.ButtonReleaseEvent += HandleButtonReleaseEvent;
 			provider.MotionNotifyEvent += HandleMotionNotifyEvent;
+
 			providers.Add (provider);
-		}		
-		
+		}
+
 		public void UnregisterMouseInputProvider (IMouseInputProvider provider)
 		{
 			provider.ButtonPressEvent -= HandleProviderButtonPressEvent;
+			provider.ButtonReleaseEvent -= HandleButtonReleaseEvent;
 			provider.MotionNotifyEvent -= HandleMotionNotifyEvent;
 			providers.Remove (provider);			
 		}
@@ -107,6 +116,12 @@ namespace moro.Framework
 			RaisePreviewButtonPressEvent (args);
 			RaiseButtonPressEvent (args);
 		}
+
+		private void HandleButtonReleaseEvent (object sender, MouseButtonEventArgs e)
+		{
+			RaisePreviewButtonReleaseEvent (e);
+			RaiseButtonReleaseEvent (e);
+		}		
 		
 		private void HandleMotionNotifyEvent (object o, MouseButtonEventArgs args)
 		{
@@ -114,8 +129,15 @@ namespace moro.Framework
 			
 			if (provider == null)
 				return;
+
+			var root = Application.Current.GetRoot (provider.RootElement);
+
+			if (root == null)
+				return;
+
+			var rootPosition = root.GetPosition ();
 			
-			TargetElement = VisualTreeHelper.HitTest (new Point (provider.X, provider.Y), provider.RootElement);
+			TargetElement = VisualTreeHelper.HitTest (new Point (provider.X - rootPosition.X, provider.Y - rootPosition.Y), provider.RootElement);
 
 			var eventArgs = new MouseButtonEventArgs ();
 
@@ -137,6 +159,22 @@ namespace moro.Framework
 				return;
 
 			ButtonPressEvent.RaiseEvent (TargetElement, args);
+		}
+
+		private void RaisePreviewButtonReleaseEvent (MouseButtonEventArgs args)
+		{
+			if (TargetElement == null)
+				return;
+			
+			PreviewButtonReleaseEvent.RaiseEvent (TargetElement, args);
+		}	
+		
+		private void RaiseButtonReleaseEvent (MouseButtonEventArgs args)
+		{
+			if (TargetElement == null)
+				return;
+			
+			ButtonReleaseEvent.RaiseEvent (TargetElement, args);
 		}
 		
 		private void RaisePreviewMotionNotifyEvent (MouseButtonEventArgs args)

@@ -31,6 +31,7 @@ namespace moro.Framework
 	public interface IMouseInputProvider
 	{
 		event EventHandler<MouseButtonEventArgs> ButtonPressEvent;
+		event EventHandler<MouseButtonEventArgs> ButtonReleaseEvent;
 		event EventHandler<MouseButtonEventArgs> MotionNotifyEvent;
 		
 		Visual RootElement { get; }

@@ -32,6 +32,7 @@ namespace moro.Framework
 	public class WidgetMouseInputProvider : IMouseInputProvider
 	{
 		public event EventHandler<MouseButtonEventArgs> ButtonPressEvent;
+		public event EventHandler<MouseButtonEventArgs> ButtonReleaseEvent;
 		public event EventHandler<MouseButtonEventArgs> MotionNotifyEvent;
 		
 		public Visual RootElement { get; private set; }
@@ -41,10 +42,11 @@ namespace moro.Framework
 		public WidgetMouseInputProvider (Widget widget, Visual rootElement)
 		{
 			widget.ButtonPressEvent += HandleWidgetButtonPressEvent;	
+			widget.ButtonReleaseEvent += HandleWidgetButtonReleaseEvent;
 			widget.MotionNotifyEvent += HandleWidgetMotionNotifyEvent;
 			
 			RootElement = rootElement;
-		}		
+		}
 
 		private void HandleWidgetButtonPressEvent (object o, ButtonPressEventArgs args)
 		{
@@ -52,11 +54,18 @@ namespace moro.Framework
 				ButtonPressEvent (this, new MouseButtonEventArgs ());				
 			}
 		}
+
+		private void HandleWidgetButtonReleaseEvent (object o, ButtonReleaseEventArgs args)
+		{
+			if (ButtonReleaseEvent != null) {
+				ButtonReleaseEvent (this, new MouseButtonEventArgs ());				
+			}
+		}
 		
 		private void HandleWidgetMotionNotifyEvent (object o, MotionNotifyEventArgs args)
 		{
-			X = args.Event.X;
-			Y = args.Event.Y;
+			X = args.Event.XRoot;
+			Y = args.Event.YRoot;
 
 			if (MotionNotifyEvent != null) {
 				MotionNotifyEvent (this, new MouseButtonEventArgs ());

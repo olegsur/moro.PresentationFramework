@@ -33,10 +33,16 @@ using moro.Framework.Data;
 namespace moro.Framework
 {
 	public class UIElement : Visual
-	{		
+	{	
+		public event EventHandler<MouseButtonEventArgs> PreviewButtonPressEvent;
 		public event EventHandler<MouseButtonEventArgs> ButtonPressEvent;
+
+		public event EventHandler<MouseButtonEventArgs> PreviewButtonReleaseEvent;
+		public event EventHandler<MouseButtonEventArgs> ButtonReleaseEvent;
+
 		public event EventHandler<MouseButtonEventArgs> PreviewMotionNotifyEvent;
 		public event EventHandler<MouseButtonEventArgs> MotionNotifyEvent;
+
 		public event EventHandler MouseEnterEvent;
 		public event EventHandler MouseLeaveEvent;
 		public event KeyPressEventHandler PreviewKeyPressEvent;
@@ -80,6 +86,9 @@ namespace moro.Framework
 
 			Mouse.PreviewButtonPressEvent += HandlePreviewButtonPressEvent;
 			Mouse.ButtonPressEvent += HandleButtonPressEvent;
+
+			Mouse.PreviewButtonReleaseEvent += OnPreviewButtonReleaseEvent;
+			Mouse.ButtonReleaseEvent += OnButtonReleaseEvent;
 			
 			Mouse.PreviewMotionNotifyEvent += OnPreviewMotionNotifyEvent;
 			Mouse.MotionNotifyEvent += OnMotionNotifyEvent;
@@ -154,6 +163,8 @@ namespace moro.Framework
 				return;
 
 			Keyboard.Focus (this);
+
+			OnPreviewButtonPressEvent (this, args);
 		}
 
 		private void HandleButtonPressEvent (object sender, MouseButtonEventArgs e)
@@ -166,17 +177,32 @@ namespace moro.Framework
 
 			OnButtonPressEvent (sender, e);	
 		}
+
+		protected virtual void OnPreviewButtonPressEvent (object o, MouseButtonEventArgs args)
+		{
+			RaisePreviewButtonPressEvent (args);
+		}
 				
 		protected virtual void OnButtonPressEvent (object o, MouseButtonEventArgs args)
 		{
 			RaiseButtonPressEvent (args);
+		}
+
+		protected virtual void OnPreviewButtonReleaseEvent (object o, MouseButtonEventArgs args)
+		{
+			RaisePreviewButtonReleaseEvent (args);
+		}
+		
+		protected virtual void OnButtonReleaseEvent (object o, MouseButtonEventArgs args)
+		{
+			RaiseButtonReleaseEvent (args);
 		}
 		
 		protected virtual void OnPreviewKeyPressEvent (object o, KeyPressEventArgs args)
 		{
 			RaisePreviewKeyPressEvent (args);
 		}
-		
+				
 		protected virtual void OnKeyPressEvent (object o, KeyPressEventArgs args)
 		{
 			var commands = InputBindings.Where (ib => ib.Command != null && ib.Gesture.Matches (args.Event.Key)).Select (ib => ib.Command);
@@ -225,11 +251,32 @@ namespace moro.Framework
 				RaiseLostKeyboardFocusEvent (EventArgs.Empty);
 			}
 		}
-		
+
+		private void RaisePreviewButtonPressEvent (MouseButtonEventArgs args)
+		{
+			if (PreviewButtonPressEvent != null) {
+				PreviewButtonPressEvent (this, args);
+			}
+		}
+
 		private void RaiseButtonPressEvent (MouseButtonEventArgs args)
 		{
 			if (ButtonPressEvent != null) {
 				ButtonPressEvent (this, args);
+			}
+		}
+
+		private void RaisePreviewButtonReleaseEvent (MouseButtonEventArgs args)
+		{
+			if (PreviewButtonReleaseEvent != null) {
+				PreviewButtonReleaseEvent (this, args);
+			}
+		}
+		
+		private void RaiseButtonReleaseEvent (MouseButtonEventArgs args)
+		{
+			if (ButtonReleaseEvent != null) {
+				ButtonReleaseEvent (this, args);
 			}
 		}
 		

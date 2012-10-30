@@ -144,6 +144,8 @@
     <Compile Include="Gtk\WidgetMouseInputProvider.cs" />
     <Compile Include="IElementHost.cs" />
     <Compile Include="Input\MouseButtonEventArgs.cs" />
+    <Compile Include="Controls\Thumb.cs" />
+    <Compile Include="Controls\DragDeltaEventArgs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

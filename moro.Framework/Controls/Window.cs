@@ -34,10 +34,22 @@ namespace moro.Framework
 		internal event EventHandler Showed;
 	
 		private readonly DependencyProperty<string> title;
+		private readonly DependencyProperty<double> left;
+		private readonly DependencyProperty<double> top;
 		
 		public string Title { 
 			get { return title.Value;} 
 			set { title.Value = value; }
+		}
+
+		public double Left { 
+			get { return left.Value;} 
+			set { left.Value = value; }
+		}
+
+		public double Top { 
+			get { return top.Value;} 
+			set { top.Value = value; }
 		}
 
 		public Window ()
@@ -46,7 +58,9 @@ namespace moro.Framework
 				throw new ApplicationException ("Application must be initialized");
 			
 			title = BuildProperty<string> ("Title");
-						
+			left = BuildProperty<double> ("Left");
+			top = BuildProperty<double> ("Top");
+												
 			StyleHelper.ApplyStyle (this, typeof(Window));
 			Application.Current.RegisterWindow (this);			
 		}

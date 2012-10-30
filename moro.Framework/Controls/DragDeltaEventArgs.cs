@@ -1,5 +1,5 @@
 //
-// IElementHost.cs
+// DragDeltaEventArgs.cs
 //
 // Author:
 //       Oleg Sur <oleg.sur@gmail.com>
@@ -27,12 +27,16 @@ using System;
 
 namespace moro.Framework
 {
-	public interface IElementHost
+	public class DragDeltaEventArgs : EventArgs
 	{
-		Visual Child { get; }
+		public double HorizontalChange { get; private set; }
+		public double VerticalChange { get; private set; }
 
-		void Render ();
-		Point GetPosition ();
+		public DragDeltaEventArgs (double horizontalChange, double verticalChange)
+		{
+			HorizontalChange = horizontalChange;
+			VerticalChange = verticalChange;
+		}
 	}
 }
 
