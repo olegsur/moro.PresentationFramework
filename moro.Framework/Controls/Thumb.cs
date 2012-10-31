@@ -38,14 +38,7 @@ namespace moro.Framework
 		{
 			ButtonPressEvent += HandleButtonPressEvent;
 			ButtonReleaseEvent += HandleButtonReleaseEvent;
-			MotionNotifyEvent += HandleMotionNotifyEvent;
-
-			MouseLeaveEvent += HandleMouseLeaveEvent;
-		}
-
-		private void HandleMouseLeaveEvent (object sender, EventArgs e)
-		{
-			IsDragging = false;
+			MotionNotifyEvent += HandleMotionNotifyEvent;		
 		}
 
 		private void HandleMotionNotifyEvent (object sender, MouseButtonEventArgs e)
@@ -65,11 +58,14 @@ namespace moro.Framework
 			IsDragging = true;
 
 			MousePosition = PointToScreen (Mouse.GetPosition (this));
+
+			Mouse.Captured = this;
 		}
 
 		private void HandleButtonReleaseEvent (object sender, MouseButtonEventArgs e)
 		{
 			IsDragging = false;
+			Mouse.Captured = null;
 		}
 
 		private void RaiseDragDelta (double horizontalChange, double verticalChange)

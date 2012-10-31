@@ -81,7 +81,10 @@ namespace moro.Framework
 					RaiseMouseEnterEvent (element);				
 			}			
 		}		
-		
+
+		public Visual Captured { get; set; }
+		private Visual CapturedTargetElement { get { return Captured ?? TargetElement; } }
+				
 		public void RegistedMouseInputProvider (IMouseInputProvider provider)
 		{
 			provider.ButtonPressEvent += HandleProviderButtonPressEvent;
@@ -147,10 +150,10 @@ namespace moro.Framework
 		
 		private void RaisePreviewButtonPressEvent (MouseButtonEventArgs args)
 		{
-			if (TargetElement == null)
+			if (CapturedTargetElement == null)
 				return;
 
-			PreviewButtonPressEvent.RaiseEvent (TargetElement, args);
+			PreviewButtonPressEvent.RaiseEvent (CapturedTargetElement, args);
 		}	
 		
 		private void RaiseButtonPressEvent (MouseButtonEventArgs args)
@@ -163,34 +166,34 @@ namespace moro.Framework
 
 		private void RaisePreviewButtonReleaseEvent (MouseButtonEventArgs args)
 		{
-			if (TargetElement == null)
+			if (CapturedTargetElement == null)
 				return;
 			
-			PreviewButtonReleaseEvent.RaiseEvent (TargetElement, args);
+			PreviewButtonReleaseEvent.RaiseEvent (CapturedTargetElement, args);
 		}	
 		
 		private void RaiseButtonReleaseEvent (MouseButtonEventArgs args)
 		{
-			if (TargetElement == null)
+			if (CapturedTargetElement == null)
 				return;
 			
-			ButtonReleaseEvent.RaiseEvent (TargetElement, args);
+			ButtonReleaseEvent.RaiseEvent (CapturedTargetElement, args);
 		}
 		
 		private void RaisePreviewMotionNotifyEvent (MouseButtonEventArgs args)
 		{
-			if (TargetElement == null)
+			if (CapturedTargetElement == null)
 				return;
 
-			PreviewMotionNotifyEvent.RaiseEvent (TargetElement, args);
+			PreviewMotionNotifyEvent.RaiseEvent (CapturedTargetElement, args);
 		}	
 		
 		private void RaiseMotionNotifyEvent (MouseButtonEventArgs args)
 		{
-			if (TargetElement == null)
+			if (CapturedTargetElement == null)
 				return;
 
-			MotionNotifyEvent.RaiseEvent (TargetElement, args);
+			MotionNotifyEvent.RaiseEvent (CapturedTargetElement, args);
 		}
 		
 		private void RaiseMouseEnterEvent (Visual visual)

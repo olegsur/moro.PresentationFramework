@@ -77,6 +77,11 @@ namespace moro.Framework
 			remove { Device.MouseLeaveEvent.Event -= value; }
 		}
 
+		public static Visual Captured {
+			get { return Device.Captured; }
+			set { Device.Captured = value; }
+		}
+
 		public static Point GetPosition (Visual visual)
 		{
 			return Device.GetPosition (visual);
