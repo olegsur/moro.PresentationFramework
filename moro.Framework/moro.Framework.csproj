@@ -146,6 +146,7 @@
     <Compile Include="Input\MouseButtonEventArgs.cs" />
     <Compile Include="Controls\Thumb.cs" />
     <Compile Include="Controls\DragDeltaEventArgs.cs" />
+    <Compile Include="Resources\ResourceDictionary.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -156,6 +157,7 @@
     <Folder Include="Media\Geometries\" />
     <Folder Include="Style\" />
     <Folder Include="Gtk\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\moro.Framework.Data\moro.Framework.Data.csproj">

@@ -35,16 +35,16 @@ namespace moro.Framework
 	{
 		public static Application Current { get; private set; }
 		
-		public Dictionary<object, object> Resources { get; private set; }
+		public ResourceDictionary Resources { get; private set; }
 		public Window MainWindow { get; private	set; }		
 		public IEnumerable<Window> Windows { get { return windows; } }
-				
+		
 		internal static readonly bool IsInitialized = false;
 		
 		private IApplication aplication;
 		private readonly List<Window> windows = new List<Window> ();
 		private readonly List<IElementHost> roots = new List<IElementHost> ();
-			
+		
 		static Application ()
 		{	
 			Current = new Application ();
@@ -56,7 +56,7 @@ namespace moro.Framework
 			aplication = new GtkApplication ();			
 			aplication.Init ();
 			
-			Resources = new Dictionary<object, object> ();
+			Resources = new ResourceDictionary ();
 			
 			var style = new Style ();
 			style.Setters.Add (new Setter ("FontFamily", "Arial"));
@@ -125,33 +125,33 @@ namespace moro.Framework
 			
 			return border;		
 		}
-						
+		
 		private static UIElement WindowTemplate (Window element)
 		{
 			var grid = new Grid () {HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch};
 			grid.RowDefinitions.Add (new RowDefinition () {Height = GridLength.Auto});
 			grid.RowDefinitions.Add (new RowDefinition ());			
 			grid.ColumnDefinitions.Add (new ColumnDefinition ());
-									
+			
 			var titleGrid = new Grid () {HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch};
 			titleGrid.RowDefinitions.Add (new RowDefinition ());
 			titleGrid.ColumnDefinitions.Add (new ColumnDefinition ());
 			titleGrid.ColumnDefinitions.Add (new ColumnDefinition () { Width = GridLength.Auto });
-									
+			
 			var title = new TextBlock ();		
 			title.Foreground = Colors.White;
 			title.HorizontalAlignment = HorizontalAlignment.Center;
 			BindingOperations.SetBinding (element.GetProperty ("Title"), title.GetProperty ("Text"));
-						
+			
 			var closeButton = CloseButton ();			
 			closeButton.Click += (sender, e) => element.Close ();
-
+			
 			titleGrid.Children.Add (title);			
 			titleGrid.Children.Add (closeButton);
 			
 			titleGrid.SetColumn (0, title);
 			titleGrid.SetColumn (1, closeButton);
-
+			
 			var titleThumb = new Thumb () 
 			{
 				HorizontalAlignment = HorizontalAlignment.Stretch, 
@@ -169,7 +169,7 @@ namespace moro.Framework
 			titleBorder.Background = GetTitleBrush ();
 			titleBorder.Child = titleThumb;
 			titleBorder.Padding = new Thickness (3);
-									
+			
 			grid.Children.Add (titleBorder);
 			grid.SetRow (0, titleBorder);
 			
@@ -187,7 +187,7 @@ namespace moro.Framework
 			
 			return grid;		
 		}
-
+		
 		private static LinearGradientBrush GetTitleBrush ()
 		{
 			var result = new LinearGradientBrush ();
@@ -220,7 +220,7 @@ namespace moro.Framework
 			path.Stroke = Colors.White;
 			path.StrokeThickness = 2;
 			path.Data = pathGeomentry;
-						
+			
 			var button = new Button () { Content = path };
 			button.Padding = new Thickness (4);
 			button.BorderColor = new Color (0x1f, 0x42, 0x6f); 
@@ -244,18 +244,18 @@ namespace moro.Framework
 			windows.Add (window);
 			aplication.RegisterWindow (window);
 		}
-
+		
 		internal void UnregisterWindow (Window window)
 		{
 			windows.Remove (window);
 			aplication.UnregisterWindow (window);
 		}
-
+		
 		public void RegisterRoot (IElementHost elementHost)
 		{
 			roots.Add (elementHost);
 		}
-
+		
 		public IElementHost GetRoot (Visual visual)
 		{
 			return roots.FirstOrDefault (r => r.Child == visual);
