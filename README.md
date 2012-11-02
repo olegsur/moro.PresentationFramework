@@ -1,1 +1,1 @@
-The moro project is an attempt to create a similar framework to WPF by using [mono](http://www.mono-project.com)/[cairo](http://www.cairographics.org).  The moro.fkalc (a project for editing and evaluating formulas) has been chosen as a project for testing rendering and layout engine, binding mechanisms, styles and templates, … 
+The moro.PresentationFramework project is an attempt to create a similar framework to WPF by using [mono](http://www.mono-project.com)/[cairo](http://www.cairographics.org).
