@@ -24,22 +24,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Gdk;
 
 namespace moro.Framework
 {
 	public class KeyGesture
 	{
 		public Key Key { get; private set; }
+		public ModifierKeys Modifiers { get; private set; }
 
-		public KeyGesture (Key key)
+		public KeyGesture (Key key) : this (key, ModifierKeys.None)
 		{
-			Key = key;
 		}
 
-		public virtual bool Matches (Key key)
+		public KeyGesture (Key key, ModifierKeys modifiers)
 		{
-			return Key == key;
+			Key = key;
+			Modifiers = modifiers;
+		}
+
+		public virtual bool Matches (Key key, ModifierKeys modifiers)
+		{
+			return Key == key && Modifiers == modifiers;
 		}
 	}
 }

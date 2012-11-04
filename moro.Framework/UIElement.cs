@@ -26,7 +26,6 @@
 
 using System;
 using System.Collections.Generic;
-using Gtk;
 using System.Linq;
 using moro.Framework.Data;
 
@@ -45,8 +44,8 @@ namespace moro.Framework
 
 		public event EventHandler MouseEnterEvent;
 		public event EventHandler MouseLeaveEvent;
-		public event KeyPressEventHandler PreviewKeyPressEvent;
-		public event KeyPressEventHandler KeyPressEvent;
+		public event EventHandler<KeyEventArgs> PreviewKeyPressEvent;
+		public event EventHandler<KeyEventArgs> KeyPressEvent;
 		public event EventHandler GotKeyboardFocusEvent;
 		public event EventHandler LostKeyboardFocusEvent;
 
@@ -198,14 +197,14 @@ namespace moro.Framework
 			RaiseButtonReleaseEvent (args);
 		}
 		
-		protected virtual void OnPreviewKeyPressEvent (object o, KeyPressEventArgs args)
+		protected virtual void OnPreviewKeyPressEvent (object o, KeyEventArgs args)
 		{
 			RaisePreviewKeyPressEvent (args);
 		}
 				
-		protected virtual void OnKeyPressEvent (object o, KeyPressEventArgs args)
+		protected virtual void OnKeyPressEvent (object o, KeyEventArgs args)
 		{
-			var commands = InputBindings.Where (ib => ib.Command != null && ib.Gesture.Matches (args.Event.Key)).Select (ib => ib.Command);
+			var commands = InputBindings.Where (ib => ib.Command != null && ib.Gesture.Matches (args.Key, Keyboard.Modifiers)).Select (ib => ib.Command);
 
 			foreach (var command in commands) {
 				command.Execute (null);
@@ -308,14 +307,14 @@ namespace moro.Framework
 			}
 		}
 		
-		private void RaisePreviewKeyPressEvent (KeyPressEventArgs args)
+		private void RaisePreviewKeyPressEvent (KeyEventArgs args)
 		{
 			if (PreviewKeyPressEvent != null) {
 				PreviewKeyPressEvent (this, args);
 			}
 		}
 				
-		private void RaiseKeyPressEvent (KeyPressEventArgs args)
+		private void RaiseKeyPressEvent (KeyEventArgs args)
 		{
 			if (KeyPressEvent != null) {
 				KeyPressEvent (this, args);

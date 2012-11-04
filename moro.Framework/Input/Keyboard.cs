@@ -25,7 +25,6 @@
 // THE SOFTWARE.
 
 using System;
-using Gtk;
 
 namespace moro.Framework
 {
@@ -41,13 +40,17 @@ namespace moro.Framework
 		public static Visual FocusedElement {
 			get	{ return Device.FocusedElement;	}
 		}
+
+		public static ModifierKeys Modifiers { 
+			get{ return Device.Modifiers;	}
+		}
 		
-		public static event EventHandler<KeyPressEventArgs> PreviewKeyPressEvent {
+		public static event EventHandler<KeyEventArgs> PreviewKeyPressEvent {
 			add { Device.PreviewKeyPressEvent.Event += value; }
 			remove { Device.PreviewKeyPressEvent.Event -= value; }
 		}	
 		
-		public static event EventHandler<KeyPressEventArgs> KeyPressEvent {
+		public static event EventHandler<KeyEventArgs> KeyPressEvent {
 			add { Device.KeyPressEvent.Event += value; }
 			remove { Device.KeyPressEvent.Event -= value; }
 		}

@@ -34,20 +34,21 @@ namespace moro.Framework
 {
 	public class KeyboardDevice
 	{
-		public RoutedEvent<KeyPressEventArgs> PreviewKeyPressEvent { get; private set; }
-		public RoutedEvent<KeyPressEventArgs> KeyPressEvent { get; private set; }
+		public RoutedEvent<KeyEventArgs> PreviewKeyPressEvent { get; private set; }
+		public RoutedEvent<KeyEventArgs> KeyPressEvent { get; private set; }
 
 		public RoutedEvent<EventArgs> GotKeyboardFocusEvent { get; private set; }
 		public RoutedEvent<EventArgs> LostKeyboardFocusEvent { get; private set; }			
 
 		public Visual FocusedElement { get; private set; }
+		public ModifierKeys Modifiers { get; private set; }
 		
 		private List<IKeyboardInputProvider> providers = new List<IKeyboardInputProvider> ();
 		
 		public KeyboardDevice ()
 		{
-			PreviewKeyPressEvent = new TunnelingEvent<KeyPressEventArgs> ();
-			KeyPressEvent = new BubblingEvent<KeyPressEventArgs> (); 
+			PreviewKeyPressEvent = new TunnelingEvent<KeyEventArgs> ();
+			KeyPressEvent = new BubblingEvent<KeyEventArgs> (); 
 
 			GotKeyboardFocusEvent = new BubblingEvent<EventArgs> (); 
 			LostKeyboardFocusEvent = new BubblingEvent<EventArgs> (); 
@@ -79,7 +80,7 @@ namespace moro.Framework
 				RaiseGotKeyboardFocusEvent ();
 		}
 
-		private void HandleProviderKeyPressEvent (object o, KeyPressEventArgs args)
+		private void HandleProviderKeyPressEvent (object o, KeyEventArgs args)
 		{
 			if (FocusedElement == null)
 				return;
@@ -88,7 +89,7 @@ namespace moro.Framework
 			RaiseKeyPressEvent (args);			
 		}	
 		
-		private void RaisePreviewKeyPressEvent (KeyPressEventArgs args)
+		private void RaisePreviewKeyPressEvent (KeyEventArgs args)
 		{
 			if (FocusedElement == null)
 				return;
@@ -96,7 +97,7 @@ namespace moro.Framework
 			PreviewKeyPressEvent.RaiseEvent (FocusedElement, args);
 		}
 		
-		private void RaiseKeyPressEvent (KeyPressEventArgs args)
+		private void RaiseKeyPressEvent (KeyEventArgs args)
 		{
 			if (FocusedElement == null)
 				return;
