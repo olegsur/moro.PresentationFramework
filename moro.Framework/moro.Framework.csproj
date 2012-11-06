@@ -152,6 +152,8 @@
     <Compile Include="Input\KeyEventArgs.cs" />
     <Compile Include="Input\Key.cs" />
     <Compile Include="Input\ModifierKeys.cs" />
+    <Compile Include="Controls\Menu.cs" />
+    <Compile Include="Resources\DefaultTheme.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

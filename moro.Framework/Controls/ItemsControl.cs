@@ -47,7 +47,6 @@ namespace moro.Framework
 			get { return itemsSource.Value;} 
 			set { itemsSource.Value = value; }
 		}		
-		
 
 		public DataTemplate ItemTemplate { get; set; }
 

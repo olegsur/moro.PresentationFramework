@@ -94,7 +94,12 @@ namespace moro.Framework
 						
 		protected override Size MeasureOverride (Size availableSize)
 		{
-			foreach (var child in children.Where(c => c.Visibility != Visibility.Collapsed)) {
+			var collection = children.Where (c => c.Visibility != Visibility.Collapsed);
+
+			if (!collection.Any ())
+				return new Size ();
+
+			foreach (var child in collection) {
 				child.Measure (availableSize);
 			}
 			
@@ -102,15 +107,15 @@ namespace moro.Framework
 			var height = 0d;			
 						
 			if (Orientation == Orientation.Horizontal) {
-				width = children.Sum (c => c.DesiredSize.Width + c.Margin.Left + c.Margin.Right);
+				width = collection.Sum (c => c.DesiredSize.Width + c.Margin.Left + c.Margin.Right);
 
-				height = children.Where (c => c.DesiredSize.Height > 0).Max (c => c.DesiredSize.Height + c.Margin.Top + c.Margin.Bottom);
-				height += children.Any (c => c.DesiredSize.Height == 0) ? children.Where (c => c.DesiredSize.Height == 0).Max (c => c.Margin.Top + c.Margin.Bottom) : 0;
+				height = collection.Where (c => c.DesiredSize.Height > 0).Max (c => c.DesiredSize.Height + c.Margin.Top + c.Margin.Bottom);
+				height += collection.Any (c => c.DesiredSize.Height == 0) ? children.Where (c => c.DesiredSize.Height == 0).Max (c => c.Margin.Top + c.Margin.Bottom) : 0;
 			} else {
-				width = children.Where (c => c.DesiredSize.Width > 0).Max (c => c.DesiredSize.Width + c.Margin.Left + c.Margin.Right);
-				width += children.Any (c => c.DesiredSize.Width == 0) ? children.Where (c => c.DesiredSize.Width == 0).Max (c => c.Margin.Left + c.Margin.Right) : 0;
+				width = collection.Where (c => c.DesiredSize.Width > 0).Max (c => c.DesiredSize.Width + c.Margin.Left + c.Margin.Right);
+				width += collection.Any (c => c.DesiredSize.Width == 0) ? children.Where (c => c.DesiredSize.Width == 0).Max (c => c.Margin.Left + c.Margin.Right) : 0;
 
-				height = children.Sum (c => c.DesiredSize.Height + c.Margin.Top + c.Margin.Bottom);			
+				height = collection.Sum (c => c.DesiredSize.Height + c.Margin.Top + c.Margin.Bottom);			
 			}
 		
 			return new Size (width, height);

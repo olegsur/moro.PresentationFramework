@@ -77,8 +77,8 @@ namespace moro.Framework
 
 		public override void DrawText (FormattedText formattedText, Point origin)
 		{
-			cr.Color = new Cairo.Color (formattedText.Foreground.R, formattedText.Foreground.G, formattedText.Foreground.B,formattedText.Foreground.Alfa);	
-			cr.MoveTo (origin.X, origin.Y);
+			cr.Color = new Cairo.Color (formattedText.Foreground.R, formattedText.Foreground.G, formattedText.Foreground.B, formattedText.Foreground.Alfa);	
+			cr.MoveTo (origin.X, origin.Y + formattedText.Height);
 			
 			cr.SelectFontFace (formattedText.FontFamily, Cairo.FontSlant.Normal, Cairo.FontWeight.Normal);
 			cr.SetFontSize (formattedText.FontSize);
@@ -105,7 +105,7 @@ namespace moro.Framework
 					
 					cr.Pattern = pattern;
 					cr.Rectangle (rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);			
-					cr.Fill();
+					cr.Fill ();
 				}
 			}
 
@@ -176,7 +176,7 @@ namespace moro.Framework
 				} else if (brush is LinearGradientBrush) {
 					var b = brush as LinearGradientBrush;
 					
-					var pattern = new Cairo.LinearGradient (b.StartPoint.X , b.StartPoint.Y, b.EndPoint.X, b.EndPoint.Y);
+					var pattern = new Cairo.LinearGradient (b.StartPoint.X, b.StartPoint.Y, b.EndPoint.X, b.EndPoint.Y);
 					foreach (var stop in b.GradientStops) {
 						pattern.AddColorStop (stop.Offset, new Cairo.Color (stop.Color.R, stop.Color.G, stop.Color.B, stop.Color.Alfa));						
 					}
@@ -184,7 +184,7 @@ namespace moro.Framework
 					cr.Pattern = pattern;
 					DrawGeometry (geometry);	
 					
-					cr.Fill();
+					cr.Fill ();
 				}
 			}
 			

@@ -1,5 +1,5 @@
 //
-// FormattedText.cs
+// Menu.cs
 //
 // Author:
 //       Oleg Sur <oleg.sur@gmail.com>
@@ -27,40 +27,11 @@ using System;
 
 namespace moro.Framework
 {
-	public class FormattedText
+	public class Menu : ItemsControl
 	{
-		public string Text { get; private set; }
-		public string FontFamily { get; private set; }
-		public double FontSize { get; set; }
-		public double Width { get; private set; }
-		public double Height { get; private set; }
-		public Color Foreground { get; private set; }
-		public double Extent { get; private set; }
-
-		public FormattedText (string text, string fontFamily, double fontSize, Color foreground)
+		public Menu ()
 		{
-			Text = text;
-			FontFamily = fontFamily;
-			FontSize = fontSize;
-			Foreground = foreground;
-
-			Measure ();
-		}
-
-		private void Measure ()
-		{
-			var surface = new Cairo.ImageSurface (Cairo.Format.ARGB32, 1, 1);
-			
-			using (Cairo.Context cr = new Cairo.Context(surface)) {			
-				cr.SelectFontFace (FontFamily, Cairo.FontSlant.Normal, Cairo.FontWeight.Normal);
-				cr.SetFontSize (FontSize);
-			
-				var textExtents = cr.TextExtents (Text);
-
-				Width = textExtents.Width;
-				Height = Math.Abs (textExtents.YBearing);		
-				Extent = textExtents.Height;
-			}
+			StyleHelper.ApplyStyle (this, typeof(Menu));
 		}
 	}
 }

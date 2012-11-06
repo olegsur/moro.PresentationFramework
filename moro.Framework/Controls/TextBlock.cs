@@ -68,14 +68,14 @@ namespace moro.Framework
 		
 		protected override void OnRender (DrawingContext dc)
 		{	
-			dc.DrawText (new FormattedText (Text, FontFamily, FontSize, Foreground), new Point (0, Height));
+			dc.DrawText (new FormattedText (Text, FontFamily, FontSize, Foreground), new Point (0, 0));
 		}
 		
 		protected override Size MeasureOverride (Size availableSize)
 		{
 			var formatedText = new FormattedText (Text, FontFamily, FontSize, Foreground);
 
-			return new Size (formatedText.Width, formatedText.Height);
+			return new Size (formatedText.Width, formatedText.Extent);
 		}		
 	}
 }
