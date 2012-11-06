@@ -154,6 +154,7 @@
     <Compile Include="Input\ModifierKeys.cs" />
     <Compile Include="Controls\Menu.cs" />
     <Compile Include="Resources\DefaultTheme.cs" />
+    <Compile Include="Controls\HeaderedItemsControl.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
