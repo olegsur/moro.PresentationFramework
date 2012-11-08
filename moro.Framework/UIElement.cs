@@ -156,14 +156,14 @@ namespace moro.Framework
 				
 		private void HandlePreviewButtonPressEvent (object o, MouseButtonEventArgs args)
 		{
+			OnPreviewButtonPressEvent (this, args);
+
 			lookingFocus = true;
 			
 			if (!Focusable || Mouse.Device.TargetElement != this)
 				return;
 
 			Keyboard.Focus (this);
-
-			OnPreviewButtonPressEvent (this, args);
 		}
 
 		private void HandleButtonPressEvent (object sender, MouseButtonEventArgs e)
