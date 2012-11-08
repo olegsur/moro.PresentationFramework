@@ -36,6 +36,8 @@ namespace moro.Framework
 
 		void RegisterWindow (Window window);
 		void UnregisterWindow (Window window);
+
+		void RegisterPopup (Popup popup);
 	}
 }
 

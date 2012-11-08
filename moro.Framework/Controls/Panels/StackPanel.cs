@@ -155,8 +155,19 @@ namespace moro.Framework
 					}
 
 				} else {
-					x = (Width - width) / 2;
 					y += child.Margin.Top;
+
+					switch (child.HorizontalAlignment) {
+					case HorizontalAlignment.Left:
+						x = 0;
+						break;
+					case HorizontalAlignment.Right:
+						x = Width - width;
+						break;
+					case HorizontalAlignment.Center:
+						x = (Width - width) / 2;
+						break;
+					}
 				}
 
 				child.Arrange (new Rect (new Point (x, y), new Size (width, height)));

@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using moro.Framework.Data;
 
 namespace moro.Framework
 {
@@ -52,12 +53,38 @@ namespace moro.Framework
 
 		public void RegisterWindow (Window window)
 		{
-			new GtkSurface (window);
+			var width = window.WidthRequest ?? 100;
+			var height = window.HeightRequest ?? 50;
+
+			var surface = new GtkSurface (window, window.Left, window.Top, width, height);
+			window.Showed += (sender, e) => surface.ShowSurface ();
+			window.Closed += (sender, e) => surface.CloseSurface ();
+
+			window.GetProperty ("Left").DependencyPropertyValueChanged += (sender, e) => surface.Move ((int)window.Left, (int)window.Top);
+			window.GetProperty ("Top").DependencyPropertyValueChanged += (sender, e) => surface.Move ((int)window.Left, (int)window.Top);
 		}
 
 		public void UnregisterWindow (Window window)
 		{
+		}	
+
+		public void RegisterPopup (Popup popup)
+		{
+			var width = popup.WidthRequest ?? 100;
+			var height = popup.HeightRequest ?? 50;
+
+			var surface = new GtkSurface (popup, 0, 0, width, height);
+			popup.Opened += (sender, e) =>
+			{
+				//var point = Mouse.GetPosition (popup.PlacementTarget);
+				var p = popup.PlacementTarget.PointToScreen (new Point (0, popup.PlacementTarget.DesiredSize.Height));
+				surface.Move ((int)p.X, (int)p.Y);
+
+				surface.ShowSurface ();
+			};
+			popup.Closed += (sender, e) => surface.Hide ();
 		}
+
 	}
 }
 

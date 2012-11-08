@@ -156,6 +156,7 @@
     <Compile Include="Resources\DefaultTheme.cs" />
     <Compile Include="Controls\HeaderedItemsControl.cs" />
     <Compile Include="Controls\MenuItem.cs" />
+    <Compile Include="Controls\Popup.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

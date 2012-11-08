@@ -90,6 +90,11 @@ namespace moro.Framework
 		{
 			return roots.FirstOrDefault (r => r.Child == visual);
 		}
+
+		public void RegisterPopup (Popup popup)
+		{
+			aplication.RegisterPopup (popup);
+		}
 	}
 }
 

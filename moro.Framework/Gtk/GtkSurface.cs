@@ -33,18 +33,18 @@ namespace moro.Framework
 		public double Height { get; private set; }
 		public double Width { get; private set; }
 
-		private Window Owner { get; set; }
+		private UIElement Owner { get; set; }
 
 		Visual IElementHost.Child { get { return Owner; } }
 		
-		public GtkSurface (Window owner): base (Gtk.WindowType.Toplevel)
+		public GtkSurface (UIElement owner, double left, double top, double width, double height): base (Gtk.WindowType.Toplevel)
 		{
 			Owner = owner;
 
-			Move ((int)Owner.Left, (int)Owner.Top);
+			Move ((int)left, (int)top);
 
-			Width = owner.WidthRequest ?? 100;
-			Height = owner.HeightRequest ?? 50;
+			Width = width;
+			Height = height;
 
 			DefaultWidth = (int)Width;
 			DefaultHeight = (int)Height;
@@ -58,23 +58,12 @@ namespace moro.Framework
 						
 			ExposeEvent += OnExposeEvent;			
 
-			Owner.Closed += HandleClosed;
-			Owner.Showed += HandleShowed;
-
 			Keyboard.Device.RegisterKeyboardInputProvider (new WidgetKeyboardInputProvider (this));
 			Mouse.Device.RegistedMouseInputProvider (new WidgetMouseInputProvider (this, owner));
 
 			Application.Current.RegisterRoot (this);
-
-			owner.GetProperty ("Left").DependencyPropertyValueChanged += HandlePosionChanged;
-			owner.GetProperty ("Top").DependencyPropertyValueChanged += HandlePosionChanged;
 		}
-
-		private void HandlePosionChanged (object sender, DPropertyValueChangedEventArgs e)
-		{		
-			Move ((int)Owner.Left, (int)Owner.Top);
-		}
-						
+					
 		public void Resize (Size size)
 		{			
 			Width = size.Width;
@@ -100,19 +89,19 @@ namespace moro.Framework
 			}		
 		}
 				
-		private void HandleClosed (object sender, EventArgs e)
+		public void CloseSurface ()
 		{
 			Destroy ();
 		}
 
-		private void HandleShowed (object sender, EventArgs e)
+		public void ShowSurface ()
 		{		
 			var size = new Size (Width, Height);
 
 			Owner.Measure (size);
 			Owner.Arrange (new Rect (Owner.DesiredSize));
 
-			Resize (new Size (Owner.Width, Owner.Height));
+			Resize (Owner.DesiredSize);
 			Show ();
 		}
 
