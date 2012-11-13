@@ -37,6 +37,9 @@ namespace moro.Framework
 		private DependencyProperty<UIElement> child;
 		private DependencyProperty<bool> isOpen;
 
+		private DependencyProperty<double> verticalOffset;
+		private DependencyProperty<double> horizontalOffset;
+
 		public UIElement PlacementTarget { 
 			get { return placementTarget.Value; }
 			set { placementTarget.Value = value; }
@@ -52,6 +55,16 @@ namespace moro.Framework
 			set { isOpen.Value = value; }
 		}
 
+		public double VerticalOffset { 
+			get { return verticalOffset.Value; }
+			set { verticalOffset.Value = value; }
+		}
+
+		public double HorizontalOffset { 
+			get { return horizontalOffset.Value; }
+			set { horizontalOffset.Value = value; }
+		}
+
 		public Popup ()
 		{
 			if (!Application.IsInitialized)
@@ -64,6 +77,9 @@ namespace moro.Framework
 
 			isOpen = BuildProperty<bool> ("IsOpen");
 			isOpen.DependencyPropertyValueChanged += HandleIsOpenChanged;
+
+			verticalOffset = BuildProperty<double> ("VerticalOffset");
+			horizontalOffset = BuildProperty<double> ("HorizontalOffset");
 
 			Application.Current.RegisterPopup (this);
 		}

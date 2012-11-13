@@ -37,7 +37,7 @@ namespace moro.Framework
 
 		Visual IElementHost.Child { get { return Owner; } }
 		
-		public GtkSurface (UIElement owner, double left, double top, double width, double height): base (Gtk.WindowType.Toplevel)
+		public GtkSurface (UIElement owner, double left, double top, double width, double height, Gtk.WindowType windowType): base (windowType)
 		{
 			Owner = owner;
 

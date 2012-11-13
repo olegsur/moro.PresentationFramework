@@ -56,7 +56,7 @@ namespace moro.Framework
 			var width = window.WidthRequest ?? 100;
 			var height = window.HeightRequest ?? 50;
 
-			var surface = new GtkSurface (window, window.Left, window.Top, width, height);
+			var surface = new GtkSurface (window, window.Left, window.Top, width, height, Gtk.WindowType.Toplevel);
 			window.Showed += (sender, e) => surface.ShowSurface ();
 			window.Closed += (sender, e) => surface.CloseSurface ();
 
@@ -73,12 +73,11 @@ namespace moro.Framework
 			var width = popup.WidthRequest ?? 100;
 			var height = popup.HeightRequest ?? 50;
 
-			var surface = new GtkSurface (popup, 0, 0, width, height);
+			var surface = new GtkSurface (popup, 0, 0, width, height, Gtk.WindowType.Popup);
 			popup.Opened += (sender, e) =>
 			{
-				//var point = Mouse.GetPosition (popup.PlacementTarget);
 				var p = popup.PlacementTarget.PointToScreen (new Point (0, popup.PlacementTarget.DesiredSize.Height));
-				surface.Move ((int)p.X, (int)p.Y);
+				surface.Move ((int)(p.X + popup.HorizontalOffset), (int)(p.Y + popup.VerticalOffset));
 
 				surface.ShowSurface ();
 			};
