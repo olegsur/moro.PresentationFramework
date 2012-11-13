@@ -143,10 +143,10 @@ namespace moro.Framework
 
 					switch (child.VerticalAlignment) {
 					case VerticalAlignment.Top:
-						y = 0;
+						y = child.Margin.Top;
 						break;
 					case VerticalAlignment.Bottom:
-						y = Height - height;
+						y = Height - child.Margin.Bottom - height;
 						break;
 					case VerticalAlignment.Center:
 					default:
@@ -159,10 +159,10 @@ namespace moro.Framework
 
 					switch (child.HorizontalAlignment) {
 					case HorizontalAlignment.Left:
-						x = 0;
+						x = child.Margin.Left;
 						break;
 					case HorizontalAlignment.Right:
-						x = Width - width;
+						x = Width - child.Margin.Right - width;
 						break;
 					case HorizontalAlignment.Center:
 						x = (Width - width) / 2;

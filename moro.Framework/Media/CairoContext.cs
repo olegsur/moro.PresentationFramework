@@ -246,9 +246,8 @@ namespace moro.Framework
 
 		private void DrawArcSegment (double xm1, double ym1, double xm2, double ym2, double xr, double yr, double alpha, bool isLargeArc, SweepDirection direction)
 		{
-			if (xr <= 0 || yr <= 0)
+			if (xr <= 0.000000001 || yr <= 0.000000001)
 				return;
-
 
 			var x1 = xm1 * Math.Cos (-alpha) - ym1 * Math.Sin (-alpha);
 			var y1 = xm1 * Math.Sin (-alpha) + ym1 * Math.Cos (-alpha);
@@ -257,7 +256,6 @@ namespace moro.Framework
 			var y2 = xm2 * Math.Sin (-alpha) + ym2 * Math.Cos (-alpha);
 
 			var r = 0.0;
-
 
 			if (xr > yr) {
 				y1 = y1 * xr / yr;
@@ -303,7 +301,7 @@ namespace moro.Framework
 				
 			}
 
-			var angle1 = Math.Asin (Math.Abs (y1 - yc1) / r);
+			var angle1 = Math.Abs (y1 - yc1) / r > 1 ? Math.PI / 2 : Math.Asin (Math.Abs (y1 - yc1) / r);
 			if ((x1 < xc1) && (y1 >= yc1))
 				angle1 = Math.PI - angle1;
 			if (y1 < yc1)
@@ -312,7 +310,7 @@ namespace moro.Framework
 			else 
 				angle1 = - angle1;
 			
-			var angle2 = Math.Asin (Math.Abs (y2 - yc1) / r);
+			var angle2 = Math.Abs (y2 - yc1) / r > 1 ? Math.PI / 2 : Math.Asin (Math.Abs (y2 - yc1) / r);
 			if ((x2 < xc1) && (y2 >= yc1))
 				angle2 = Math.PI - angle2;
 			if (y2 < yc1) {
@@ -320,11 +318,9 @@ namespace moro.Framework
 					angle2 = Math.PI + angle2;
 				else 
 					angle2 = - angle2;
-
 			}
-
 			
-			var alfa1 = Math.Asin (Math.Abs (y1 - yc2) / r);
+			var alfa1 = Math.Abs (y1 - yc2) / r > 1 ? Math.PI / 2 : Math.Asin (Math.Abs (y1 - yc2) / r);
 			
 			if ((x1 < xc2) && (y1 >= yc2))
 				alfa1 = Math.PI - alfa1;
@@ -335,7 +331,7 @@ namespace moro.Framework
 					alfa1 = - alfa1;
 			}
 
-			var alfa2 = Math.Asin (Math.Abs (y2 - yc2) / r);
+			var alfa2 = Math.Abs (y2 - yc2) / r > 1 ? Math.PI / 2 : Math.Asin (Math.Abs (y2 - yc2) / r);
 			if ((x2 < xc2) && (y2 >= yc2))
 				alfa2 = Math.PI - alfa2;
 			if (y2 < yc2) {
@@ -344,7 +340,6 @@ namespace moro.Framework
 				else 
 					alfa2 = - alfa2;
 			}
-
 			
 			cr.Save ();
 

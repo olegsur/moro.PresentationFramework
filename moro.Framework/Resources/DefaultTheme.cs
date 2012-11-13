@@ -33,8 +33,8 @@ namespace moro.Framework
 		public DefaultTheme ()
 		{
 			var style = new Style ();
-			style.Setters.Add (new Setter ("FontFamily", "Arial"));
-			style.Setters.Add (new Setter ("FontSize", 20d));	
+			style.Setters.Add (new Setter ("FontFamily", "Sans"));
+			style.Setters.Add (new Setter ("FontSize", 14d));	
 			style.Setters.Add (new Setter ("Foreground", Colors.Black));
 			this [typeof(TextBlock)] = style;
 			
