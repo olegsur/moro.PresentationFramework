@@ -59,6 +59,10 @@ namespace moro.Framework
 			style = new Style ();
 			style.Setters.Add (new Setter ("ItemsPanel", new StackPanel () { Orientation = Orientation.Horizontal }));
 			this [typeof(Menu)] = style;
+
+			style = new Style ();
+			style.Setters.Add (new Setter ("Template", new ControlTemplate (MenuItemTemplate)));			
+			this [typeof(MenuItem)] = style;
 		}
 		
 		private static UIElement ButtonTemplate (UIElement element)
@@ -205,6 +209,24 @@ namespace moro.Framework
 			button.BorderThickness = 1;
 			button.Background = GetTitleBrush ();
 			return button;
+		}
+
+		private static UIElement MenuItemTemplate (UIElement element)
+		{
+			var header = new ContentControl ();
+			BindingOperations.SetBinding (element.GetProperty ("Header"), header.GetProperty ("Content"));
+			
+			var popup = new Popup ()
+			{
+				PlacementTarget = element,
+				VerticalOffset = 6,
+				HorizontalOffset = -5,
+			};
+			
+			BindingOperations.SetBinding (element.GetProperty ("ItemsPanel"), popup.GetProperty ("Child"));
+			BindingOperations.SetBinding (element.GetProperty ("IsSubmenuOpen"), popup.GetProperty ("IsOpen"));
+			
+			return header;
 		}
 	}
 }

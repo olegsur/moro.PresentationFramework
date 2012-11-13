@@ -42,6 +42,8 @@ namespace moro.Framework
 			isSubmenuOpen = BuildProperty<bool> ("IsSubmenuOpen");
 
 			GetProperty ("Header").DependencyPropertyValueChanged += HandleHeaderChanged;
+
+			StyleHelper.ApplyStyle (this, typeof(MenuItem));
 		}
 
 		private void HandleHeaderChanged (object sender, DPropertyValueChangedEventArgs e)
