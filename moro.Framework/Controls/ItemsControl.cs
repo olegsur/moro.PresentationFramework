@@ -123,14 +123,14 @@ namespace moro.Framework
 				}
 				break;
 			case NotifyCollectionChangedAction.Replace:
-				var i = e.NewStartingIndex;
+				var index2 = e.NewStartingIndex;
 				foreach (var o in e.NewItems) {
 					var child = ItemTemplate.LoadContent (o);
 
-					ItemsPanel.Children[i] = child;
+					ItemsPanel.Children[index2] = child;
 
-					items[i] = new ItemVisual () { Item = o, Visual = child };
-					i++;
+					items[index2] = new ItemVisual () { Item = o, Visual = child };
+					index2++;
 				}
 				break;
 			case NotifyCollectionChangedAction.Reset:
