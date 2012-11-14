@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "moro.Framework", "moro.Fram
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "moro.Framework.Data", "moro.Framework.Data\moro.Framework.Data.csproj", "{49DA0351-1DBC-45D8-B8EF-5F7FF8BAF354}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test1", "Test1\Test1.csproj", "{BE270F0D-350F-423D-B663-1AE1F6D37BEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -19,8 +21,12 @@ Global
 		{89883CC4-E276-40ED-802F-260F61A610C1}.Debug|x86.Build.0 = Debug|x86
 		{89883CC4-E276-40ED-802F-260F61A610C1}.Release|x86.ActiveCfg = Release|x86
 		{89883CC4-E276-40ED-802F-260F61A610C1}.Release|x86.Build.0 = Release|x86
+		{BE270F0D-350F-423D-B663-1AE1F6D37BEA}.Debug|x86.ActiveCfg = Debug|x86
+		{BE270F0D-350F-423D-B663-1AE1F6D37BEA}.Debug|x86.Build.0 = Debug|x86
+		{BE270F0D-350F-423D-B663-1AE1F6D37BEA}.Release|x86.ActiveCfg = Release|x86
+		{BE270F0D-350F-423D-B663-1AE1F6D37BEA}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = moro.Framework\moro.Framework.csproj
+		StartupItem = Test1\Test1.csproj
 	EndGlobalSection
 EndGlobal
