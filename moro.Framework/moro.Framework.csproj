@@ -34,18 +34,10 @@
     <Reference Include="System" />
     <Reference Include="Mono.Cairo" />
     <Reference Include="System.Core" />
-    <Reference Include="gdk-sharp">
-      <HintPath>..\..\..\..\..\..\Program Files\GtkSharp\2.12\lib\gtk-sharp-2.0\gdk-sharp.dll</HintPath>
-    </Reference>
-    <Reference Include="glib-sharp">
-      <HintPath>..\..\..\..\..\..\Program Files\GtkSharp\2.12\lib\gtk-sharp-2.0\glib-sharp.dll</HintPath>
-    </Reference>
-    <Reference Include="gtk-sharp">
-      <HintPath>..\..\..\..\..\..\Program Files\GtkSharp\2.12\lib\gtk-sharp-2.0\gtk-sharp.dll</HintPath>
-    </Reference>
-    <Reference Include="atk-sharp">
-      <HintPath>..\..\..\..\..\..\Program Files\GtkSharp\2.12\lib\gtk-sharp-2.0\atk-sharp.dll</HintPath>
-    </Reference>
+    <Reference Include="gdk-sharp"/>
+    <Reference Include="glib-sharp"/>
+    <Reference Include="gtk-sharp" />
+    <Reference Include="atk-sharp" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
