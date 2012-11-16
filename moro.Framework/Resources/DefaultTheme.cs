@@ -48,11 +48,13 @@ namespace moro.Framework
 			style.Setters.Add (new Setter ("Template", new ControlTemplate (ItemsControlTemplate)));			
 			this [typeof(ItemsControl)] = style;
 			
-			style = new Style ();			
+			style = new Style ();		
 			style.Setters.Add (new Setter ("Template", new ControlTemplate (UserControlTemplate)));			
 			this [typeof(UserControl)] = style;
 			
-			style = new Style ();			
+			style = new Style ();
+			style.Setters.Add (new Setter ("Left", 1d));
+			style.Setters.Add (new Setter ("Top", 20d));
 			style.Setters.Add (new Setter ("Template", new ControlTemplate (element => WindowTemplate (element as Window))));			
 			this [typeof(Window)] = style;
 
