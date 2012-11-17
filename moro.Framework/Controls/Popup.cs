@@ -81,15 +81,31 @@ namespace moro.Framework
 			verticalOffset = BuildProperty<double> ("VerticalOffset");
 			horizontalOffset = BuildProperty<double> ("HorizontalOffset");
 
+			PreviewButtonPressEvent += HandlePreviewButtonReleaseEvent;
+
 			Application.Current.RegisterPopup (this);
+		}
+
+		private void HandlePreviewButtonReleaseEvent (object sender, MouseButtonEventArgs e)
+		{
+			var point = Mouse.GetPosition (this);
+
+			if (point.X < 0 || point.X > Width || point.Y < 0 || point.Y > Height)
+				Close ();
 		}
 
 		private void HandleIsOpenChanged (object sender, DPropertyValueChangedEventArgs<bool> e)
 		{
-			if (e.NewValue)
+			if (e.NewValue) {
 				RaiseOpened ();
-			else
+
+				Mouse.Captured = this;
+			} else {
 				RaiseClosed ();
+
+				Mouse.Captured = null;
+			}
+
 		}
 
 		public void Open ()

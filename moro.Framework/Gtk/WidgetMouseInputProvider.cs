@@ -36,9 +36,7 @@ namespace moro.Framework
 		public event EventHandler<MouseButtonEventArgs> MotionNotifyEvent;
 		
 		public Visual RootElement { get; private set; }
-		public double X { get; private set; }
-		public double Y { get; private set; }
-		
+
 		public WidgetMouseInputProvider (Widget widget, Visual rootElement)
 		{
 			widget.ButtonPressEvent += HandleWidgetButtonPressEvent;	
@@ -64,9 +62,6 @@ namespace moro.Framework
 		
 		private void HandleWidgetMotionNotifyEvent (object o, MotionNotifyEventArgs args)
 		{
-			X = args.Event.XRoot;
-			Y = args.Event.YRoot;
-
 			if (MotionNotifyEvent != null) {
 				MotionNotifyEvent (this, new MouseButtonEventArgs ());
 			}			

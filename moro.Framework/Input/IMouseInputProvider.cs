@@ -35,8 +35,5 @@ namespace moro.Framework
 		event EventHandler<MouseButtonEventArgs> MotionNotifyEvent;
 		
 		Visual RootElement { get; }
-
-		double X { get; }
-		double Y { get; }
 	}
 }

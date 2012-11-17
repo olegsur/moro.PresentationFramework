@@ -119,6 +119,17 @@ namespace moro.Framework
 
 			return new Point (x, y);
 		}	
+
+		public Point GerMousePosition ()
+		{
+			int x;
+			int y;
+			
+			base.GetPointer (out x, out y);
+			
+			return new Point (x, y);
+		}
+
 	}
 }
 

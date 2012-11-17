@@ -33,6 +33,7 @@ namespace moro.Framework
 
 		void Render ();
 		Point GetPosition ();
+		Point GerMousePosition ();
 	}
 }
 

@@ -104,14 +104,18 @@ namespace moro.Framework
 
 		public Point GetPosition (Visual visual)
 		{
-			var root = VisualTreeHelper.GetVisualBranch (visual).Last ();
+			var rootElement = VisualTreeHelper.GetVisualBranch (visual).Last ();
 
-			var provider = providers.FirstOrDefault (p => p.RootElement == root);
+			var provider = providers.FirstOrDefault (p => p.RootElement == rootElement);
 			
 			if (provider == null)
 				return new Point ();
 
-			return visual.PointFromScreen (new Point (provider.X, provider.Y));
+			var root = Application.Current.GetRoot (provider.RootElement);
+			var rootPosition = root.GetPosition ();
+			var point = root.GerMousePosition ();
+
+			return visual.PointFromScreen (new Point (rootPosition.X + point.X, rootPosition.Y + point.Y));
 		}
 
 		private void HandleProviderButtonPressEvent (object o, MouseButtonEventArgs args)
@@ -138,9 +142,9 @@ namespace moro.Framework
 			if (root == null)
 				return;
 
-			var rootPosition = root.GetPosition ();
+			var point = root.GerMousePosition ();
 			
-			TargetElement = VisualTreeHelper.HitTest (new Point (provider.X - rootPosition.X, provider.Y - rootPosition.Y), provider.RootElement);
+			TargetElement = VisualTreeHelper.HitTest (point, provider.RootElement);
 
 			var eventArgs = new MouseButtonEventArgs ();
 
