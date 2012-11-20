@@ -64,11 +64,11 @@ namespace moro.Framework
 		
 		public Border ()
 		{
-			padding = BuildProperty<Thickness> ("Padding");
-			background = BuildProperty<Brush> ("Background");
-			borderColor = BuildProperty<Color> ("BorderColor");
-			borderThickness = BuildProperty<double> ("BorderThickness");
-			cornerRadius = BuildProperty<CornerRadius> ("CornerRadius");
+			padding = BuildVisualProperty<Thickness> ("Padding");
+			background = BuildVisualProperty<Brush> ("Background");
+			borderColor = BuildVisualProperty<Color> ("BorderColor");
+			borderThickness = BuildVisualProperty<double> ("BorderThickness");
+			cornerRadius = BuildVisualProperty<CornerRadius> ("CornerRadius");
 					
 			BorderColor = Colors.Black;
 			BorderThickness = 1;
