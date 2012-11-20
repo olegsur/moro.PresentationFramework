@@ -104,11 +104,11 @@ namespace moro.Framework
 		protected DependencyProperty<T> BuildVisualProperty<T> (string name)
 		{
 			var property = BuildProperty<T> (name);
-			((IDependencyProperty)property).DependencyPropertyValueChanged += HandleDependencyPropertyValueChanged;
+			((IDependencyProperty)property).DependencyPropertyValueChanged += (sender, e) => RenderRoot ();
 			return property;
 		}
 		
-		private void HandleDependencyPropertyValueChanged (object sender, DPropertyValueChangedEventArgs e)
+		protected void RenderRoot ()
 		{
 			var visualRoot = VisualTreeHelper.GetVisualBranch (this).Last ();
 			var root = Application.Current.GetRoot (visualRoot);
