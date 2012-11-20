@@ -32,246 +32,212 @@ namespace moro.Framework
 	public class WidgetKeyboardInputProvider : IKeyboardInputProvider
 	{
 		public event EventHandler<KeyEventArgs> KeyPressEvent;
+		public event EventHandler<KeyEventArgs> KeyReleaseEvent;
 		
 		public WidgetKeyboardInputProvider (Widget widget)
 		{
 			widget.KeyPressEvent += HandleKeyPressEvent;
+			widget.KeyReleaseEvent += HandleKeyReleaseEvent;
 		}
 
 		[GLib.ConnectBefore] 
-		private void HandleKeyPressEvent (object o, KeyPressEventArgs e)
+		private void HandleKeyPressEvent (object o, KeyPressEventArgs args)
 		{
-			var key = Convert (e.Event.Key);
-			RaiseKeyPressEventHandler (new KeyEventArgs (key));
+			var key = Convert (args.Event.HardwareKeycode);
+			RaiseKeyPressEvent (new KeyEventArgs (key));
 		}
 
-		private void RaiseKeyPressEventHandler (KeyEventArgs args)
+		[GLib.ConnectBefore] 
+		private void HandleKeyReleaseEvent (object o, KeyReleaseEventArgs args)
+		{
+			var key = Convert (args.Event.HardwareKeycode);
+			RaiseKeyReleaseEvent (new KeyEventArgs (key));
+		}
+
+		private void RaiseKeyPressEvent (KeyEventArgs args)
 		{
 			if (KeyPressEvent != null) {
 				KeyPressEvent (this, args);
 			}
 		}
 
-		private Key Convert (Gdk.Key k)
+		private void RaiseKeyReleaseEvent (KeyEventArgs args)
 		{
-			switch (k) {
-			case Gdk.Key.Cancel:
-				return Key.Cancel;
-			case Gdk.Key.BackSpace:
-				return Key.Back;
-			case Gdk.Key.Tab:
-				return Key.Tab;
-			case Gdk.Key.Linefeed:
-				return Key.LineFeed;
-			case Gdk.Key.Clear:
-				return Key.Clear;
-			case Gdk.Key.Return:
-				return Key.Return;
-			case Gdk.Key.KP_Enter:
-				return Key.Enter;
-			case Gdk.Key.Pause:
-				return Key.Pause;
-			case Gdk.Key.Caps_Lock:
-				return Key.CapsLock;
-			case Gdk.Key.kana_MO:
-				return Key.KanaMode;
-			case Gdk.Key.Hangul:
-				return Key.HangulMode;
-			case Gdk.Key.Kanji:
-				return Key.KanjiMode;
-			case Gdk.Key.Escape:
-				return Key.Escape;
-			case Gdk.Key.space:
-				return Key.Space;		
-			case Gdk.Key.Page_Up:
-				return Key.PageUp;
-			case Gdk.Key.Page_Down:
-				return Key.PageDown;
-			case Gdk.Key.KP_End:
-				return Key.End;
-			case Gdk.Key.KP_Home:
-				return Key.Home;
-			case Gdk.Key.Left:
-				return Key.Left;
-			case Gdk.Key.Up:
-				return Key.Up;
-			case Gdk.Key.Right:
-				return Key.Right;
-			case Gdk.Key.Down:
-				return Key.Down;
-			case Gdk.Key.Select:
-				return Key.Select;
-			case Gdk.Key.Print:
-				return Key.Print;
-			case Gdk.Key.Execute:
-				return Key.Execute;
-			case Gdk.Key.Key_3270_PrintScreen:
-				return Key.PrintScreen;
-			case Gdk.Key.Insert:
-				return Key.Insert;
-			case Gdk.Key.Delete:
-				return Key.Delete;
-			case Gdk.Key.Help:
-				return Key.Help;
-			case Gdk.Key.Key_0:
-				return Key.D0;
-			case Gdk.Key.Key_1:
-				return Key.D1;
-			case Gdk.Key.Key_2:
-				return Key.D2;
-			case Gdk.Key.Key_3:
-				return Key.D3;
-			case Gdk.Key.Key_4:
-				return Key.D4;
-			case Gdk.Key.Key_5:
-				return Key.D5;
-			case Gdk.Key.Key_6:
-				return Key.D6;
-			case Gdk.Key.Key_7:
-				return Key.D7;
-			case Gdk.Key.Key_8:
-				return Key.D8;
-			case Gdk.Key.Key_9:
-				return Key.D9;
-			case Gdk.Key.A:
-				return Key.A;
-			case Gdk.Key.B:
-				return Key.B;
-			case Gdk.Key.C:
-				return Key.C;
-			case Gdk.Key.D:
-				return Key.D;
-			case Gdk.Key.E:
-				return Key.E;
-			case Gdk.Key.F:
-				return Key.F;
-			case Gdk.Key.G:
-				return Key.G;
-			case Gdk.Key.H:
-				return Key.H;
-			case Gdk.Key.I:
-				return Key.I;
-			case Gdk.Key.J:
-				return Key.J;
-			case Gdk.Key.K:
-				return Key.K;
-			case Gdk.Key.L:
-				return Key.L;
-			case Gdk.Key.M:
-				return Key.M;
-			case Gdk.Key.N:
-				return Key.N;
-			case Gdk.Key.O:
-				return Key.O;
-			case Gdk.Key.P:
-				return Key.P;
-			case Gdk.Key.Q:
-				return Key.Q;
-			case Gdk.Key.R:
-				return Key.R;
-			case Gdk.Key.S:
-				return Key.S;
-			case Gdk.Key.T:
-				return Key.T;
-			case Gdk.Key.U:
-				return Key.U;
-			case Gdk.Key.V:
-				return Key.V;
-			case Gdk.Key.W:
-				return Key.W;
-			case Gdk.Key.X:
-				return Key.X;
-			case Gdk.Key.Y:
-				return Key.Y;
-			case Gdk.Key.Z:
-				return Key.Z;
-			case Gdk.Key.multiply:
-				return Key.Multiply;
-			case Gdk.Key.plus:
-				return Key.Add;	
-			case Gdk.Key.KP_Separator:
-				return Key.Separator;
-			case Gdk.Key.minus:
-				return Key.Subtract;
-			case Gdk.Key.KP_Decimal:
-				return Key.Decimal;
-			case Gdk.Key.KP_Divide:
-				return Key.Divide;
-			case Gdk.Key.F1:
-				return Key.F1;
-			case Gdk.Key.F2:
-				return Key.F2;
-			case Gdk.Key.F3:
-				return Key.F3;
-			case Gdk.Key.F4:
-				return Key.F4;
-			case Gdk.Key.F5:
-				return Key.F5;
-			case Gdk.Key.F6:
-				return Key.F6;
-			case Gdk.Key.F7:
-				return Key.F7;
-			case Gdk.Key.F8:
-				return Key.F8;
-			case Gdk.Key.F9:
-				return Key.F9;
-			case Gdk.Key.F10:
-				return Key.F10;
-			case Gdk.Key.F11:
-				return Key.F11;
-			case Gdk.Key.F12:
-				return Key.F12;
-			case Gdk.Key.F13:
-				return Key.F13;
-			case Gdk.Key.F14:
-				return Key.F14;
-			case Gdk.Key.F15:
-				return Key.F15;
-			case Gdk.Key.F16:
-				return Key.F16;
-			case Gdk.Key.F17:
-				return Key.F17;
-			case Gdk.Key.F18:
-				return Key.F18;
-			case Gdk.Key.F19:
-				return Key.F19;
-			case Gdk.Key.F20:
-				return Key.F20;
-			case Gdk.Key.F21:
-				return Key.F21;
-			case Gdk.Key.F22:
-				return Key.F22;
-			case Gdk.Key.F23:
-				return Key.F23;
-			case Gdk.Key.F24:
-				return Key.F24;
-			case Gdk.Key.Num_Lock:
-				return Key.NumLock;
-			case Gdk.Key.Scroll_Lock:
-				return Key.Scroll;
-			case Gdk.Key.Shift_L:
-				return Key.LeftShift;
-			case Gdk.Key.Shift_R:
-				return Key.RightShift;
-			case Gdk.Key.Control_L:
-				return Key.LeftCtrl;
-			case Gdk.Key.Control_R:
-				return Key.RightCtrl;
-			case Gdk.Key.Alt_L:
-				return Key.LeftAlt;
-			case Gdk.Key.Alt_R:
-				return Key.RightAlt;
-			case Gdk.Key.Key_3270_EraseEOF:			
-				return Key.EraseEof;
-			case Gdk.Key.Key_3270_Play:
-				return Key.Play;	
-			case Gdk.Key.comma:
-				return Key.OemComma;
-			case Gdk.Key.colon:
-				return Key.Oem1;
-			default:
-				return Key.None;
+			if (KeyReleaseEvent != null) {
+				KeyReleaseEvent (this, args);
 			}
+		}
+
+		private Key Convert (ushort keyCode)
+		{
+			switch (keyCode) {
+			case 10:
+				return Key.D1;
+			case 11:
+				return Key.D2;
+			case 12:
+				return Key.D3;
+			case 13:
+				return Key.D4;
+			case 14:
+				return Key.D5;
+			case 15:
+				return Key.D6;
+			case 16:
+				return Key.D7;
+			case 17:
+				return Key.D8;
+			case 18:
+				return Key.D9;
+			case 19:
+				return Key.D0;
+			case 20:
+				return Key.OemMinus;
+			case 21:
+				return Key.OemPlus;
+			case 22:
+				return Key.Back;
+			case 23:
+				return Key.Tab;
+			case 24:
+				return Key.Q;
+			case 25:
+				return Key.W;
+			case 26:
+				return Key.E;
+			case 27:
+				return Key.R;
+			case 28:
+				return Key.T;
+			case 29:
+				return Key.Y;
+			case 30:
+				return Key.U;
+			case 31:
+				return Key.I;
+			case 32:
+				return Key.O;
+			case 33:
+				return Key.P;
+			case 34:
+				return Key.OemOpenBrackets;
+			case 35:
+				return Key.OemCloseBrackets;
+			case 36:
+				return Key.Enter;
+			case 37:
+				return Key.LeftCtrl;
+			case 38:
+				return Key.A;
+			case 39:
+				return Key.S;
+			case 40:
+				return Key.D;
+			case 41:
+				return Key.F;
+			case 42:
+				return Key.G;
+			case 43:
+				return Key.H;
+			case 44:
+				return Key.J;
+			case 45:
+				return Key.K;
+			case 46:
+				return Key.L;
+			case 47:
+				return Key.OemSemicolon;
+			case 48:
+				return Key.OemQuotes;
+			case 50:
+				return Key.LeftShift;
+			case 51:
+				return Key.OemBackslash;
+			case 52:
+				return Key.Z;
+			case 53:
+				return Key.X;
+			case 54:
+				return Key.C;
+			case 55:
+				return Key.V;
+			case 56:
+				return Key.B;
+			case 57:
+				return Key.N;
+			case 58:
+				return Key.M;
+			case 59:
+				return Key.OemComma;
+			case 60:
+				return Key.OemPeriod;
+			case 61:
+				return Key.OemQuestion;
+			case 62:
+				return Key.RightShift;
+			case 63:
+				return Key.Multiply;
+			case 64:
+				return Key.LeftAlt;
+			case 65:
+				return Key.Space;
+			case 77:
+				return Key.NumLock;
+			case 79:
+				return Key.NumPad7;
+			case 80:
+				return Key.NumPad8;
+			case 81:
+				return Key.NumPad9;
+			case 82:
+				return Key.Subtract;
+			case 83:
+				return Key.NumPad4;
+			case 84:
+				return Key.NumPad5;
+			case 85:
+				return Key.NumPad6;
+			case 86:
+				return Key.Add;
+			case 87:
+				return Key.NumPad1;
+			case 88:
+				return Key.NumPad2;
+			case 89:
+				return Key.NumPad3;
+			case 90:
+				return Key.NumPad0;
+			case 105:
+				return Key.RightCtrl;
+			case 106:
+				return Key.Divide;
+			case 108:
+				return Key.RightAlt;			
+			case 110:
+				return Key.Home;			
+			case 111:
+				return Key.Up;
+			case 112:
+				return Key.PageUp;
+			case 113:
+				return Key.Left;
+			case 114:
+				return Key.Right;
+			case 115:
+				return Key.End;
+			case 116:
+				return Key.Down;			
+			case 117:
+				return Key.PageDown;
+			case 118:
+				return Key.Insert;
+			case 119:
+				return Key.Delete;
+			case 133:
+				return Key.LeftWindows;
+			}
+
+			return Key.None;
 		}
 	}
 }

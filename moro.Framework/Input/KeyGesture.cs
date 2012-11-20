@@ -42,7 +42,7 @@ namespace moro.Framework
 			Modifiers = modifiers;
 		}
 
-		public virtual bool Matches (Key key, ModifierKeys modifiers)
+		public bool Matches (Key key, ModifierKeys modifiers)
 		{
 			return Key == key && Modifiers == modifiers;
 		}

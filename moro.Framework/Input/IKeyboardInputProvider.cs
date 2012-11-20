@@ -31,6 +31,7 @@ namespace moro.Framework
 	public interface IKeyboardInputProvider
 	{
 		event EventHandler<KeyEventArgs> KeyPressEvent;		
+		event EventHandler<KeyEventArgs> KeyReleaseEvent;
 	}
 }
 

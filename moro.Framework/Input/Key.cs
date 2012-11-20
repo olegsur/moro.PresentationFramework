@@ -231,6 +231,7 @@ namespace moro.Framework
 		DbeEnterDialogConversionMode,
 		OemClear,
 		DeadCharProcessed,
+		LeftWindows,
 	}
 }
 

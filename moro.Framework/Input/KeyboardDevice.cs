@@ -56,13 +56,16 @@ namespace moro.Framework
 		
 		public void RegisterKeyboardInputProvider (IKeyboardInputProvider provider)
 		{
-			provider.KeyPressEvent += HandleProviderKeyPressEvent;
+			provider.KeyPressEvent += HandleKeyPressEvent;
+			provider.KeyReleaseEvent += HandleKeyReleaseEvent;
 			providers.Add (provider);
-		}		
-		
+		}
+
+
 		public void UnregisterKeyboardInputProvider (IKeyboardInputProvider provider)
 		{
-			provider.KeyPressEvent -= HandleProviderKeyPressEvent;
+			provider.KeyPressEvent -= HandleKeyPressEvent;
+			provider.KeyPressEvent -= HandleKeyReleaseEvent;
 			providers.Remove (provider);			
 		}
 
@@ -80,14 +83,31 @@ namespace moro.Framework
 				RaiseGotKeyboardFocusEvent ();
 		}
 
-		private void HandleProviderKeyPressEvent (object o, KeyEventArgs args)
+		private void HandleKeyPressEvent (object o, KeyEventArgs args)
 		{
+			switch (args.Key) {
+			case Key.LeftShift:
+			case Key.RightShift:
+				Modifiers |= ModifierKeys.Shift;
+				break;
+			}
+
 			if (FocusedElement == null)
 				return;
 			
 			RaisePreviewKeyPressEvent (args);
 			RaiseKeyPressEvent (args);			
-		}	
+		}
+
+		private void HandleKeyReleaseEvent (object sender, KeyEventArgs args)
+		{
+			switch (args.Key) {
+			case Key.LeftShift:
+			case Key.RightShift:
+				Modifiers ^= ModifierKeys.Shift;
+				break;
+			}
+		}
 		
 		private void RaisePreviewKeyPressEvent (KeyEventArgs args)
 		{
