@@ -143,6 +143,7 @@ namespace moro.Framework
 
 					switch (child.VerticalAlignment) {
 					case VerticalAlignment.Top:
+					case VerticalAlignment.Stretch:
 						y = child.Margin.Top;
 						break;
 					case VerticalAlignment.Bottom:
@@ -159,6 +160,7 @@ namespace moro.Framework
 
 					switch (child.HorizontalAlignment) {
 					case HorizontalAlignment.Left:
+					case HorizontalAlignment.Stretch:
 						x = child.Margin.Left;
 						break;
 					case HorizontalAlignment.Right:
