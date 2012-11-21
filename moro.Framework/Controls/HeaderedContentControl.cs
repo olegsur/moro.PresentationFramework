@@ -1,5 +1,5 @@
 //
-// Selector.cs
+// HeaderedContentControl.cs
 //
 // Author:
 //       Oleg Sur <oleg.sur@gmail.com>
@@ -24,13 +24,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using moro.Framework.Data;
 
 namespace moro.Framework
 {
-	public abstract class Selector : ItemsControl
+	public class HeaderedContentControl : ContentControl
 	{
-		public Selector ()
+		private DependencyProperty<UIElement> header;
+		
+		public UIElement Header { 
+			get { return header.Value; }
+			set { header.Value = value; }
+		}
+		
+		public HeaderedContentControl ()
 		{
+			header = BuildProperty<UIElement> ("Header");
 		}
 	}
 }

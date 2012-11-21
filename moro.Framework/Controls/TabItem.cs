@@ -1,5 +1,5 @@
 //
-// Selector.cs
+// TabItem.cs
 //
 // Author:
 //       Oleg Sur <oleg.sur@gmail.com>
@@ -27,9 +27,9 @@ using System;
 
 namespace moro.Framework
 {
-	public abstract class Selector : ItemsControl
+	public class TabItem : HeaderedContentControl
 	{
-		public Selector ()
+		public TabItem ()
 		{
 		}
 	}
