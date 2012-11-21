@@ -24,20 +24,40 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using moro.Framework.Data;
 
 namespace moro.Framework
 {
 	public abstract class ButtonBase : ContentControl
 	{
 		public event EventHandler Click;
+
+		private DependencyProperty<ICommand> command;
+		private DependencyProperty<object> commandParameter;
+
+		public ICommand Command {
+			get { return command.Value; }
+			set { command.Value = value; }
+		}
+
+		public object CommandParameter {
+			get { return commandParameter.Value; }
+			set { commandParameter.Value = value; }
+		}
 		
 		public ButtonBase ()
 		{
+			command = BuildProperty<ICommand> ("Command");
+			commandParameter = BuildProperty<object> ("CommandParameter");
+
 			ButtonPressEvent += HandleButtonPressEvent;
 		}
 
 		private void HandleButtonPressEvent (object o, MouseButtonEventArgs args)
 		{
+			if (Command != null)
+				Command.Execute (CommandParameter);
+
 			RaiseClick ();
 		}
 		

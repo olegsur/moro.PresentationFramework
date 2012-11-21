@@ -62,7 +62,7 @@ namespace moro.Framework
 		public void Run (Window window)
 		{
 			MainWindow = window;
-			MainWindow.Closed += (sender, e) => aplication.Shutdown ();
+			MainWindow.Closed += (sender, e) => Shutdown ();
 			
 			window.Show ();
 			
@@ -94,6 +94,11 @@ namespace moro.Framework
 		public void RegisterPopup (Popup popup)
 		{
 			aplication.RegisterPopup (popup);
+		}
+
+		public void Shutdown ()
+		{
+			aplication.Shutdown ();
 		}
 	}
 }
