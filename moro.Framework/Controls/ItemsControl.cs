@@ -69,11 +69,19 @@ namespace moro.Framework
 
 		private void HandleItemsPanelChanged (object sender, DPropertyValueChangedEventArgs<Panel> e)
 		{
-			if (e.OldValue != null)
+			if (e.OldValue != null) {
+				e.OldValue.Children.Clear ();
+
 				RemoveVisualChild (e.OldValue);
+			}
 				
-			if (e.NewValue != null)
+			if (e.NewValue != null) {
 				AddVisualChild (e.NewValue);
+
+				foreach (var item in items) {
+					e.NewValue.Children.Add (item.Visual);
+				}
+			}
 		}						
 
 		private void ItemsSourceChanged (object sender, DPropertyValueChangedEventArgs<IEnumerable> e)
@@ -127,9 +135,9 @@ namespace moro.Framework
 				foreach (var o in e.NewItems) {
 					var child = ItemTemplate.LoadContent (o);
 
-					ItemsPanel.Children[index2] = child;
+					ItemsPanel.Children [index2] = child;
 
-					items[index2] = new ItemVisual () { Item = o, Visual = child };
+					items [index2] = new ItemVisual () { Item = o, Visual = child };
 					index2++;
 				}
 				break;
