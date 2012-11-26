@@ -31,6 +31,7 @@ namespace moro.Framework
 	{
 		public TabControl ()
 		{
+			StyleHelper.ApplyStyle (this, typeof(TabControl));
 		}
 	}
 }

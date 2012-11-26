@@ -65,6 +65,15 @@ namespace moro.Framework
 			style = new Style ();
 			style.Setters.Add (new Setter ("Template", new ControlTemplate (MenuItemTemplate)));			
 			this [typeof(MenuItem)] = style;
+
+			style = new Style ();
+			style.Setters.Add (new Setter ("Padding", 0d));
+			style.Setters.Add (new Setter ("Background", new SolidColorBrush (new Color (0xd6, 0xd4, 0xd2))));
+			style.Setters.Add (new Setter ("BorderThickness", 0d));
+			style.Setters.Add (new Setter ("HorizontalAlignment", HorizontalAlignment.Stretch));
+			style.Setters.Add (new Setter ("VerticalAlignment", VerticalAlignment.Stretch));
+			style.Setters.Add (new Setter ("Template", new ControlTemplate (TabControlTemplate)));			
+			this [typeof(TabControl)] = style;
 		}
 		
 		private static UIElement ButtonTemplate (UIElement element)
@@ -229,6 +238,58 @@ namespace moro.Framework
 			BindingOperations.SetBinding (element.GetProperty ("IsSubmenuOpen"), popup.GetProperty ("IsOpen"));
 			
 			return header;
+		}
+
+		private static UIElement TabControlTemplate (UIElement element)
+		{
+			var grid = new Grid ()
+			{
+				HorizontalAlignment = HorizontalAlignment.Stretch,
+				VerticalAlignment = VerticalAlignment.Stretch
+			};
+			
+			grid.RowDefinitions.Add (new RowDefinition () { Height = GridLength.Auto });
+			grid.RowDefinitions.Add (new RowDefinition ());
+			grid.ColumnDefinitions.Add (new ColumnDefinition ());
+			
+			var selectedTabHeader = new ContentControl ();
+			BindingOperations.SetBinding (element, "SelectedItem.Header", selectedTabHeader.GetProperty ("Content"));
+			
+			var selectedTabContent = new ContentControl ()
+			{
+				HorizontalAlignment = HorizontalAlignment.Stretch,
+				VerticalAlignment = VerticalAlignment.Stretch
+			};
+			BindingOperations.SetBinding (element, "SelectedItem.Content", selectedTabContent.GetProperty ("Content"));
+			
+			var headerBorder = new Border ()
+			{
+				Background = new SolidColorBrush(new Color(0xf2, 0xf1, 0xf0)),
+				Child = selectedTabHeader,
+				Padding = new Thickness(5),
+				BorderThickness = 0,
+			};
+			
+			grid.Children.Add (headerBorder);
+			grid.Children.Add (selectedTabContent);
+			
+			grid.SetRow (0, headerBorder);
+			grid.SetColumn (0, headerBorder);
+			
+			grid.SetRow (1, selectedTabContent);
+			grid.SetColumn (0, selectedTabContent);
+			
+			var border = new Border ()
+			{
+				Child = grid,
+			};
+
+			BindingOperations.SetBinding (element.GetProperty ("Padding"), border.GetProperty ("Padding"));
+			BindingOperations.SetBinding (element.GetProperty ("Background"), border.GetProperty ("Background"));
+			BindingOperations.SetBinding (element.GetProperty ("BorderThickness"), border.GetProperty ("BorderThickness"));
+			BindingOperations.SetBinding (element.GetProperty ("BorderColor"), border.GetProperty ("BorderColor"));
+			
+			return border;
 		}
 	}
 }
