@@ -50,19 +50,21 @@ namespace moro.Framework
 
 		public DataTemplate ItemTemplate { get; set; }
 
-		private List<ItemVisual> items = new List<ItemVisual> ();
+		private ObservableCollection<ItemView> items = new ObservableCollection<ItemView> ();
+		public ObservableCollection<ItemView> Items { get { return items; } }
 
 		public ItemsControl ()
 		{
 			itemsPanel = BuildProperty<Panel> ("ItemsPanel");
-			itemsPanel.DependencyPropertyValueChanged += HandleItemsPanelChanged;
-			
+			itemsPanel.DependencyPropertyValueChanged += HandleItemsPanelChanged;			
 			ItemsPanel = new StackPanel ();
-			itemsSource = BuildProperty<IEnumerable> ("ItemsSource");
 
+			itemsSource = BuildProperty<IEnumerable> ("ItemsSource");
 			itemsSource.DependencyPropertyValueChanged += ItemsSourceChanged;
 
 			ItemTemplate = new DataTemplate (o => o is UIElement ? o as UIElement : new TextBlock () {Text = o.ToString ()});
+
+			items.CollectionChanged += HandleItemsChanged;
 			
 			StyleHelper.ApplyStyle (this, typeof(ItemsControl));
 		}
@@ -85,40 +87,30 @@ namespace moro.Framework
 		}						
 
 		private void ItemsSourceChanged (object sender, DPropertyValueChangedEventArgs<IEnumerable> e)
-		{
-			if (ItemsPanel == null)
-				return;
+		{	
+			if (e.OldValue is INotifyCollectionChanged)
+				(e.NewValue as INotifyCollectionChanged).CollectionChanged -= HandleItemSourceCollectionChanged;
 			
-			ItemsPanel.Children.Clear ();
-
 			foreach (var o in e.NewValue) {
 				var child = ItemTemplate.LoadContent (o);
-				ItemsPanel.Children.Add (child);
 
-				items.Add (new ItemVisual () { Item = o, Visual = child });
+				items.Add (new ItemView () { Item = o, Visual = child });
 			}
 
-			if (e.NewValue is INotifyCollectionChanged) {
-				var collection = e.NewValue as INotifyCollectionChanged;
-
-				collection.CollectionChanged += HandleCollectionChanged;
-			}
+			if (e.NewValue is INotifyCollectionChanged) 
+				(e.NewValue as INotifyCollectionChanged).CollectionChanged += HandleItemSourceCollectionChanged;
 		}
 
-		private void HandleCollectionChanged (object sender, NotifyCollectionChangedEventArgs e)
+		private void HandleItemSourceCollectionChanged (object sender, NotifyCollectionChangedEventArgs e)
 		{
-			if (ItemsPanel == null)
-				return;
-			
 			switch (e.Action) {
 			case NotifyCollectionChangedAction.Add:
 				var index = e.NewStartingIndex;
 
 				foreach (var o in e.NewItems) {
 					var child = ItemTemplate.LoadContent (o);
-					ItemsPanel.Children.Insert (index, child);
 
-					items.Insert (index, new ItemVisual () { Item = o, Visual = child });
+					items.Insert (index, new ItemView () { Item = o, Visual = child });
 					index++;
 				}
 				break;
@@ -126,7 +118,6 @@ namespace moro.Framework
 				foreach (var o in e.OldItems) {
 					var item = items.First (i => i.Item == o);
 
-					ItemsPanel.Children.Remove (item.Visual);
 					items.Remove (item);
 				}
 				break;
@@ -135,19 +126,47 @@ namespace moro.Framework
 				foreach (var o in e.NewItems) {
 					var child = ItemTemplate.LoadContent (o);
 
-					ItemsPanel.Children [index2] = child;
-
-					items [index2] = new ItemVisual () { Item = o, Visual = child };
+					items [index2] = new ItemView () { Item = o, Visual = child };
 					index2++;
 				}
 				break;
 			case NotifyCollectionChangedAction.Reset:
-				ItemsPanel.Children.Clear ();
-				break;
-			default:
-				break;
+				items.Clear ();
+				break;			
 			}
+		}
 
+		private void HandleItemsChanged (object sender, NotifyCollectionChangedEventArgs e)
+		{
+			if (ItemsPanel == null)
+				return;
+
+			switch (e.Action) {
+			case NotifyCollectionChangedAction.Add:
+				var index = e.NewStartingIndex;
+				
+				foreach (var itemView in e.NewItems.Cast<ItemView>()) {
+					ItemsPanel.Children.Insert (index, itemView.Visual);
+					index++;
+				}
+				break;
+			case NotifyCollectionChangedAction.Remove:
+				foreach (var o in e.OldItems) {
+					var item = items.First (i => i.Item == o);
+					
+					ItemsPanel.Children.Remove (item.Visual);
+				}
+				break;
+			case NotifyCollectionChangedAction.Replace:
+				var index2 = e.NewStartingIndex;
+				foreach (var o in e.NewItems.Cast<ItemView>()) {										
+					ItemsPanel.Children [index2] = o.Visual;
+				}
+				break;
+			case NotifyCollectionChangedAction.Reset:
+				ItemsPanel.Children.Clear ();
+				break;			
+			}
 		}
 				
 		protected override int GetVisualChildrenCountCore ()
@@ -159,13 +178,12 @@ namespace moro.Framework
 		{
 			return ItemsPanel;
 		}
+	}
 
-		private class ItemVisual
-		{
-			public object Item { get; set; }
-			public UIElement Visual { get; set; }
-		}
-
+	public class ItemView
+	{
+		public object Item { get; set; }
+		public UIElement Visual { get; set; }
 	}
 }
 

@@ -23,14 +23,40 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 using System;
+using System.Collections.Specialized;
+using System.Linq;
+using moro.Framework.Data;
 
 namespace moro.Framework
 {
 	public abstract class Selector : ItemsControl
 	{
+		private DependencyProperty<UIElement> selectedItem;
+
+		public UIElement SelectedItem { 
+			get { return selectedItem.Value; }
+			set { selectedItem.Value = value; }
+		}
+
 		public Selector ()
 		{
+			selectedItem = BuildProperty<UIElement> ("SelectedItem");
+
+			Items.CollectionChanged += HandleItemsChanged;
+		}
+
+		private void HandleItemsChanged (object sender, NotifyCollectionChangedEventArgs e)
+		{
+			switch (e.Action) {
+			case NotifyCollectionChangedAction.Add:
+				if (SelectedItem == null)
+					SelectedItem = e.NewItems.Cast<ItemView> ().First ().Visual;
+				break;
+			default:
+				break;
+			}
 		}
 	}
 }
