@@ -43,8 +43,24 @@ namespace moro.Framework
 		public Selector ()
 		{
 			selectedItem = BuildProperty<UIElement> ("SelectedItem");
+			selectedItem.DependencyPropertyValueChanged += HandleSelectedItemChanged;
 
 			Items.CollectionChanged += HandleItemsChanged;
+		}
+
+		private void HandleSelectedItemChanged (object sender, DPropertyValueChangedEventArgs<UIElement> e)
+		{
+			if (e.OldValue != null) {
+				var isSelected = e.OldValue.GetProperty ("IsSelected");
+				if (isSelected != null)
+					isSelected.Value = false;
+			}
+
+			if (e.NewValue != null) {
+				var isSelected = e.NewValue.GetProperty ("IsSelected");
+				if (isSelected != null)
+					isSelected.Value = true;
+			}
 		}
 
 		private void HandleItemsChanged (object sender, NotifyCollectionChangedEventArgs e)

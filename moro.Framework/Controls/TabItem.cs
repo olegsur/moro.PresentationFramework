@@ -24,13 +24,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using moro.Framework.Data;
 
 namespace moro.Framework
 {
 	public class TabItem : HeaderedContentControl
 	{
+		private readonly DependencyProperty<bool> isSelected;
+
+		public bool IsSelected { 
+			get { return isSelected.Value;} 
+			set { isSelected.Value = value; }
+		}
+
 		public TabItem ()
 		{
+			isSelected = BuildProperty<bool> ("IsSelected");
 		}
 	}
 }
