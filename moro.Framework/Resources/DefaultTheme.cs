@@ -251,30 +251,26 @@ namespace moro.Framework
 			grid.RowDefinitions.Add (new RowDefinition () { Height = GridLength.Auto });
 			grid.RowDefinitions.Add (new RowDefinition ());
 			grid.ColumnDefinitions.Add (new ColumnDefinition ());
-			
-			var selectedTabHeader = new ContentControl ();
-			BindingOperations.SetBinding (element, "SelectedItem.Header", selectedTabHeader.GetProperty ("Content"));
-			
+									
 			var selectedTabContent = new ContentControl ()
 			{
 				HorizontalAlignment = HorizontalAlignment.Stretch,
 				VerticalAlignment = VerticalAlignment.Stretch
 			};
 			BindingOperations.SetBinding (element, "SelectedItem.Content", selectedTabContent.GetProperty ("Content"));
-			
-			var headerBorder = new Border ()
+
+			var headerPanel = new ItemsControl ()
 			{
-				Background = new SolidColorBrush(new Color(0xf2, 0xf1, 0xf0)),
-				Child = selectedTabHeader,
-				Padding = new Thickness(5),
-				BorderThickness = 0,
+				ItemsPanel = new StackPanel() { Orientation = Orientation.Horizontal },
+				ItemTemplate = new DataTemplate(TabHeaderTemplate),
 			};
-			
-			grid.Children.Add (headerBorder);
+			BindingOperations.SetBinding (element.GetProperty ("Items"), headerPanel.GetProperty ("ItemsSource"));
+
+			grid.Children.Add (headerPanel);
 			grid.Children.Add (selectedTabContent);
 			
-			grid.SetRow (0, headerBorder);
-			grid.SetColumn (0, headerBorder);
+			grid.SetRow (0, headerPanel);
+			grid.SetColumn (0, headerPanel);
 			
 			grid.SetRow (1, selectedTabContent);
 			grid.SetColumn (0, selectedTabContent);
@@ -290,6 +286,24 @@ namespace moro.Framework
 			BindingOperations.SetBinding (element.GetProperty ("BorderColor"), border.GetProperty ("BorderColor"));
 			
 			return border;
+		}
+
+		private static UIElement TabHeaderTemplate (object o)
+		{
+			var item = o as ItemView;
+
+			var tabHeader = new ContentControl ();
+			BindingOperations.SetBinding (item.Visual.GetProperty ("Header"), tabHeader.GetProperty ("Content"));
+
+			var headerBorder = new Border ()
+			{
+				Background = new SolidColorBrush(new Color(0xf2, 0xf1, 0xf0)),
+				Child = tabHeader,
+				Padding = new Thickness(5),
+				BorderThickness = 0,
+			};
+
+			return headerBorder;
 		}
 	}
 }
