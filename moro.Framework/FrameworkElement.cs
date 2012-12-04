@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using moro.Framework.Data;
 
@@ -71,6 +72,8 @@ namespace moro.Framework
 			get { return style.Value;} 
 			set { style.Value = value; }
 		}
+
+		private readonly List<SetterOperation> setterOperations = new List<SetterOperation> ();
 		
 		public FrameworkElement ()
 		{	
@@ -141,16 +144,29 @@ namespace moro.Framework
 		
 		private void HandleStyleChanged (object sender, DPropertyValueChangedEventArgs<Style> e)
 		{
+			if (e.OldValue != null)
+				RemoveStyle (e.OldValue);
+
 			if (e.NewValue != null)
 				ApplyStyle (e.NewValue);
+		}
+
+		private void RemoveStyle (Style style)
+		{
+			foreach (var operation in setterOperations) {
+				operation.Remove ();
+			}
+
+			setterOperations.Clear ();
 		}
 
 		private void ApplyStyle (Style style)
 		{
 			foreach (var setter in style.Setters.OfType<Setter>()) {
-				var property = GetProperty (setter.Property);
-				if (property != null)
-					property.Value = setter.Value;
+				var operation = new SetterOperation (this, setter);
+				operation.Apply ();
+
+				setterOperations.Add (operation);
 			}
 		}
 	}
