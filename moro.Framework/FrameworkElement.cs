@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using moro.Framework.Data;
 
@@ -147,7 +148,21 @@ namespace moro.Framework
 
 		private void ApplyStyle (Style style)
 		{
-			foreach (var setter in style.Setters.OfType<Setter>()) {
+			ApplySetters (style.Setters.OfType<Setter> ().ToList ());
+
+			foreach (var trigger in style.Triggers) {
+				var property = GetProperty (trigger.Property);
+				if (property != null) {
+					if (property.Value == trigger.Value) {
+						ApplySetters (trigger.Setters);
+					}
+				}				
+			}
+		}
+
+		private void ApplySetters (IEnumerable<Setter> setters)
+		{
+			foreach (var setter in setters) {
 				var property = GetProperty (setter.Property);
 				if (property != null)
 					property.Value = setter.Value;
