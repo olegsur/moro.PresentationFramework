@@ -47,7 +47,6 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="UIElement.cs" />
-    <Compile Include="ElementHost.cs" />
     <Compile Include="FrameworkElement.cs" />
     <Compile Include="Common\Size.cs" />
     <Compile Include="Common\Thickness.cs" />
@@ -158,6 +157,9 @@
     <Compile Include="Controls\TabItem.cs" />
     <Compile Include="Style\SetterOperation.cs" />
     <Compile Include="Style\Trigger.cs" />
+    <Compile Include="Style\ConditionalSetterOperation.cs" />
+    <Compile Include="Style\ISetterOperation.cs" />
+    <Compile Include="Style\SetterCondition.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

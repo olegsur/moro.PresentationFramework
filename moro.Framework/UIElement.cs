@@ -51,6 +51,7 @@ namespace moro.Framework
 
 		private readonly DependencyProperty<Visibility> visibility;
 		private readonly DependencyProperty<bool> focusable;
+		private readonly DependencyProperty<bool> isMouseOver;
 		
 		public Size DesiredSize { get; set; }
 
@@ -70,6 +71,11 @@ namespace moro.Framework
 			set { focusable.Value = value; }
 		}
 
+		public bool IsMouseOver { 
+			get { return isMouseOver.Value; } 
+			private set { isMouseOver.Value = value;}
+		}
+
 		public List<KeyBinding> InputBindings { get; private set; }
 
 		private bool lookingFocus;
@@ -82,6 +88,7 @@ namespace moro.Framework
 
 			visibility = BuildVisualProperty<Visibility> ("Visibility");
 			focusable = BuildProperty<bool> ("Focusable");
+			isMouseOver = BuildProperty<bool> ("IsMouseOver");
 
 			Mouse.PreviewButtonPressEvent += HandlePreviewButtonPressEvent;
 			Mouse.ButtonPressEvent += HandleButtonPressEvent;
@@ -225,11 +232,13 @@ namespace moro.Framework
 				
 		protected virtual void OnMouseEnterEvent (object sender, EventArgs args)
 		{
+			IsMouseOver = true;
 			RaiseMouseEnterEvent (args);
 		}
 				
 		protected virtual void OnMouseLeaveEvent (object sender, EventArgs args)
 		{
+			IsMouseOver = false;
 			RaiseMouseLeaveEvent (args);
 		}
 

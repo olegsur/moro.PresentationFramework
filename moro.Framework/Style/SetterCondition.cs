@@ -1,5 +1,5 @@
 //
-// SetterOperation.cs
+// SetterCondition.cs
 //
 // Author:
 //       Oleg Sur <oleg.sur@gmail.com>
@@ -28,38 +28,36 @@ using moro.Framework.Data;
 
 namespace moro.Framework
 {
-	public class SetterOperation : ISetterOperation
+	public class SetterCondition
 	{
-		private DependencyObject owner;
-		private Setter setter; 
-		
-		private object oldValue;
-		
-		public SetterOperation (DependencyObject owner, Setter setter)
+		public event EventHandler Changed;
+
+		private DependencyObject Object { get; set; }
+		private IDependencyProperty Property { get; set; }
+		private object Value { get; set; }
+
+		public SetterCondition (DependencyObject o, string property, object value)
 		{
-			this.owner = owner;
-			this.setter = setter;
+			Object = o;
+			Property = Object.GetProperty (property);
+			Value = value;
+		
+			if (Property != null)
+				Property.DependencyPropertyValueChanged += HandlePropertyChanged;
 		}
-		
-		public void Apply ()
+
+		public bool IsMatch ()
 		{
-			var property = owner.GetProperty (setter.Property);
-			
-			if (property == null)
-				return;
-			
-			oldValue = property.Value;
-			property.Value = setter.Value;
+			if (Property == null || Property.Value == null)
+				return false;
+
+			return Property.Value.Equals (Value);
 		}
-		
-		public void Remove ()
+
+		private void HandlePropertyChanged (object sender, DPropertyValueChangedEventArgs e)
 		{
-			var property = owner.GetProperty (setter.Property);
-			
-			if (property == null)
-				return;
-			
-			property.Value = oldValue;
+			if (Changed != null)
+				Changed (this, EventArgs.Empty);
 		}
 	}
 }

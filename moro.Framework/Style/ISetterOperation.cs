@@ -1,5 +1,5 @@
 //
-// SetterOperation.cs
+// ISetterOperation.cs
 //
 // Author:
 //       Oleg Sur <oleg.sur@gmail.com>
@@ -24,43 +24,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using moro.Framework.Data;
 
 namespace moro.Framework
 {
-	public class SetterOperation : ISetterOperation
+	public interface ISetterOperation
 	{
-		private DependencyObject owner;
-		private Setter setter; 
-		
-		private object oldValue;
-		
-		public SetterOperation (DependencyObject owner, Setter setter)
-		{
-			this.owner = owner;
-			this.setter = setter;
-		}
-		
-		public void Apply ()
-		{
-			var property = owner.GetProperty (setter.Property);
-			
-			if (property == null)
-				return;
-			
-			oldValue = property.Value;
-			property.Value = setter.Value;
-		}
-		
-		public void Remove ()
-		{
-			var property = owner.GetProperty (setter.Property);
-			
-			if (property == null)
-				return;
-			
-			property.Value = oldValue;
-		}
+		void Apply ();
+		void Remove ();
 	}
 }
 

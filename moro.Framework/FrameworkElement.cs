@@ -73,7 +73,7 @@ namespace moro.Framework
 			set { style.Value = value; }
 		}
 
-		private readonly List<SetterOperation> setterOperations = new List<SetterOperation> ();
+		private readonly List<ISetterOperation> setterOperations = new List<ISetterOperation> ();
 		
 		public FrameworkElement ()
 		{	
@@ -167,6 +167,17 @@ namespace moro.Framework
 				operation.Apply ();
 
 				setterOperations.Add (operation);
+			}
+
+			foreach (var trigger in style.Triggers) {
+				var condition = new SetterCondition (this, trigger.Property, trigger.Value);
+
+				foreach (var setter in trigger.Setters) {
+					var operation = new ConditionalSetterOperation (condition, new SetterOperation (this, setter));
+					operation.Apply ();
+				
+					setterOperations.Add (operation);
+				}
 			}
 		}
 	}
