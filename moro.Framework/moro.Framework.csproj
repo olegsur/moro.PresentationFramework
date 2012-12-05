@@ -157,6 +157,7 @@
     <Compile Include="Controls\HeaderedContentControl.cs" />
     <Compile Include="Controls\TabItem.cs" />
     <Compile Include="Style\SetterOperation.cs" />
+    <Compile Include="Style\Trigger.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
