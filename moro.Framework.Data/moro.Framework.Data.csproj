@@ -41,15 +41,18 @@
     <Compile Include="DependencyProperty.cs" />
     <Compile Include="DPropertyValueChangedEventArgs.cs" />
     <Compile Include="Binding.cs" />
-    <Compile Include="BindingExpression.cs" />
+    <Compile Include="PathExpressions\BindingExpression.cs" />
     <Compile Include="IValueConverter.cs" />
     <Compile Include="EmptyConverter.cs" />
-    <Compile Include="PathExpression.cs" />
-    <Compile Include="SelfExpression.cs" />
-    <Compile Include="PropertyExpression.cs" />
+    <Compile Include="PathExpressions\PathExpression.cs" />
+    <Compile Include="PathExpressions\SelfExpression.cs" />
     <Compile Include="IAttachedPropertiesContainer.cs" />
     <Compile Include="BindingOperations.cs" />
-    <Compile Include="AttachedPropertyExpression.cs" />
+    <Compile Include="PathExpressions\AttachedPropertyExpression.cs" />
+    <Compile Include="PathExpressions\PropertyExpression.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="PathExpressions\" />
+  </ItemGroup>
 </Project>
