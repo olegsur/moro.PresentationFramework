@@ -49,6 +49,7 @@
     <Compile Include="IAttachedPropertiesContainer.cs" />
     <Compile Include="BindingOperations.cs" />
     <Compile Include="PathExpressions\AttachedPropertyExpression.cs" />
+    <Compile Include="PathExpressions\PathExpressionParser.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

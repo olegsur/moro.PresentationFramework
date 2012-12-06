@@ -1,5 +1,5 @@
 //
-// BindingOperations.cs
+// PathExpressionParser.cs
 //
 // Author:
 //       Oleg Sur <oleg.sur@gmail.com>
@@ -24,28 +24,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Linq;
-using moro.Framework.Data;
 
 namespace moro.Framework.Data
 {
-	public static class BindingOperations
+	public static class PathExpressionParser
 	{
-		public static void SetBinding (IDependencyProperty source, IDependencyProperty target, IValueConverter converter = null)
+		public static PathExpression Parse (DependencyObject source, string path)
 		{
-			new Binding (new PropertyExpression (source), new PropertyExpression (target), converter ?? new EmptyConverter ());
-		}
+			var paths = path.Split ('.');
+			
+			PathExpression expression = new SelfExpression (source);
+			
+			foreach (var p in paths) {
+				expression = new PropertyExpression (expression, p);
+			}
 
-		public static void SetBinding (DependencyObject source, string path, IDependencyProperty target, IValueConverter converter = null)
-		{
-			new Binding (PathExpressionParser.Parse (source, path), new PropertyExpression (target), converter ?? new EmptyConverter ());
-		}
-
-		public static void SetBinding (IDependencyProperty source, IAttachedPropertiesContainer container, object item, string propertyName, IValueConverter converter = null)
-		{
-			var self = new SelfExpression (container);
-
-			new Binding (new PropertyExpression (source), new AttachedPropertyExpression (self, item, propertyName), converter ?? new EmptyConverter ());
+			return expression;
 		}
 	}
 }
