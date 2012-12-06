@@ -73,7 +73,7 @@ namespace moro.Framework
 			set { style.Value = value; }
 		}
 
-		private readonly List<ISetterOperation> setterOperations = new List<ISetterOperation> ();
+		private readonly List<ISetterBehavior> setterOperations = new List<ISetterBehavior> ();
 		
 		public FrameworkElement ()
 		{	
@@ -163,7 +163,7 @@ namespace moro.Framework
 		private void ApplyStyle (Style style)
 		{
 			foreach (var setter in style.Setters.OfType<Setter>()) {
-				var operation = new SetterOperation (this, setter);
+				var operation = new SetterBehavior (this, setter);
 				operation.Apply ();
 
 				setterOperations.Add (operation);
@@ -173,7 +173,7 @@ namespace moro.Framework
 				var condition = new SetterCondition (this, trigger.Property, trigger.Value);
 
 				foreach (var setter in trigger.Setters) {
-					var operation = new ConditionalSetterOperation (condition, new SetterOperation (this, setter));
+					var operation = new ConditionalSetterBehavior (condition, new SetterBehavior (this, setter));
 					operation.Apply ();
 				
 					setterOperations.Add (operation);

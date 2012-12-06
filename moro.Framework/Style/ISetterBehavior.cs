@@ -1,5 +1,5 @@
 //
-// ISetterOperation.cs
+// ISetterBehavior.cs
 //
 // Author:
 //       Oleg Sur <oleg.sur@gmail.com>
@@ -27,7 +27,7 @@ using System;
 
 namespace moro.Framework
 {
-	public interface ISetterOperation
+	public interface ISetterBehavior
 	{
 		void Apply ();
 		void Remove ();

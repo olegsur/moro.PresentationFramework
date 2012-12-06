@@ -1,5 +1,5 @@
 //
-// SetterOperation.cs
+// ConditionalSetterBehavior.cs
 //
 // Author:
 //       Oleg Sur <oleg.sur@gmail.com>
@@ -22,44 +22,46 @@
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// THE SOFTWARE.	
 using System;
-using moro.Framework.Data;
 
 namespace moro.Framework
 {
-	public class SetterOperation : ISetterOperation
+	public class ConditionalSetterBehavior : ISetterBehavior
 	{
-		private DependencyObject owner;
-		private Setter setter; 
-		
-		private object oldValue;
-		
-		public SetterOperation (DependencyObject owner, Setter setter)
+		private SetterBehavior operation;
+		private SetterCondition condition;
+		private bool isSetterApplied;
+
+		public ConditionalSetterBehavior (SetterCondition condition, SetterBehavior operation)
 		{
-			this.owner = owner;
-			this.setter = setter;
+			this.operation = operation;
+			this.condition = condition;
+			this.condition.Changed += HandleConditionChanged;
 		}
-		
+
 		public void Apply ()
 		{
-			var property = owner.GetProperty (setter.Property);
-			
-			if (property == null)
-				return;
-			
-			oldValue = property.Value;
-			property.Value = setter.Value;
+			if (condition.IsMatch ()) {
+				operation.Apply ();
+				isSetterApplied = true;
+			}
 		}
-		
+
 		public void Remove ()
 		{
-			var property = owner.GetProperty (setter.Property);
-			
-			if (property == null)
-				return;
-			
-			property.Value = oldValue;
+			if (isSetterApplied) {
+				operation.Remove ();
+				isSetterApplied = false;
+			}
+		}
+
+		private void HandleConditionChanged (object sender, EventArgs e)
+		{
+			if (condition.IsMatch ())
+				Apply ();
+			else
+				Remove ();
 		}
 	}
 }

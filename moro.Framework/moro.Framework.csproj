@@ -155,10 +155,10 @@
     <Compile Include="Controls\Popup.cs" />
     <Compile Include="Controls\HeaderedContentControl.cs" />
     <Compile Include="Controls\TabItem.cs" />
-    <Compile Include="Style\SetterOperation.cs" />
+    <Compile Include="Style\SetterBehavior.cs" />
     <Compile Include="Style\Trigger.cs" />
-    <Compile Include="Style\ConditionalSetterOperation.cs" />
-    <Compile Include="Style\ISetterOperation.cs" />
+    <Compile Include="Style\ConditionalSetterBehavior.cs" />
+    <Compile Include="Style\ISetterBehavior.cs" />
     <Compile Include="Style\SetterCondition.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
