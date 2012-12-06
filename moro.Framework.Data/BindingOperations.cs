@@ -33,27 +33,27 @@ namespace moro.Framework.Data
 	{
 		public static void SetBinding (IDependencyProperty source, IDependencyProperty target, IValueConverter converter = null)
 		{
-			new Binding (new PathExpression (source), new PathExpression (target), converter ?? new EmptyConverter ());
+			new Binding (new PropertyExpression (source), new PropertyExpression (target), converter ?? new EmptyConverter ());
 		}
 
 		public static void SetBinding (DependencyObject source, string path, IDependencyProperty target, IValueConverter converter = null)
 		{
 			var paths = path.Split ('.');
 
-			BindingExpression expression = new SelfExpression (source);
+			PathExpression expression = new SelfExpression (source);
 
 			foreach (var p in paths) {
-				expression = new PathExpression (expression, p);
+				expression = new PropertyExpression (expression, p);
 			}
 
-			new Binding (expression, new PathExpression (target), converter ?? new EmptyConverter ());
+			new Binding (expression, new PropertyExpression (target), converter ?? new EmptyConverter ());
 		}
 
 		public static void SetBinding (IDependencyProperty source, IAttachedPropertiesContainer container, object item, string propertyName, IValueConverter converter = null)
 		{
 			var self = new SelfExpression (container);
 
-			new Binding (new PathExpression (source), new AttachedPropertyExpression (self, item, propertyName), converter ?? new EmptyConverter ());
+			new Binding (new PropertyExpression (source), new AttachedPropertyExpression (self, item, propertyName), converter ?? new EmptyConverter ());
 		}
 	}
 }

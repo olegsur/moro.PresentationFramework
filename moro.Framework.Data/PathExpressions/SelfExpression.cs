@@ -27,7 +27,7 @@ using System;
 
 namespace moro.Framework.Data
 {
-	public class SelfExpression : BindingExpression
+	public class SelfExpression : PathExpression
 	{
 		private readonly DependencyProperty<object> item;
 

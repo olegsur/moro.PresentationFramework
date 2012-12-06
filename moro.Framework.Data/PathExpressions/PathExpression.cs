@@ -27,48 +27,18 @@ using System;
 
 namespace moro.Framework.Data
 {
-	public class PathExpression : BindingExpression
+	public abstract class PathExpression : DependencyObject
 	{
-		private string PropertyName { get; set; }
-		private IDependencyProperty Source { get; set; }
+		private readonly DependencyProperty<IDependencyProperty> property;
 
-		public PathExpression (IDependencyProperty property)
-		{
-			Property = property;
+		public IDependencyProperty Property { 
+			get { return property.Value;}
+			protected set { property.Value = value; }
 		}
 
-		public PathExpression (BindingExpression expression, string propertyName)
+		public PathExpression ()
 		{
-			PropertyName = propertyName;
-
-			Source = expression.Property;
-
-			if (Source != null) {
-				if (Source.Value != null)
-					Property = (Source.Value as DependencyObject).GetProperty (propertyName);
-				Source.DependencyPropertyValueChanged += HandlePropertyValueChanged;
-			}
-
-			expression.GetProperty ("Property").DependencyPropertyValueChanged += HandlePropertyChanged;
-		}
-
-		private void HandlePropertyChanged (object sender, DPropertyValueChangedEventArgs e)
-		{		
-			if (Source != null)
-				Source.DependencyPropertyValueChanged -= HandlePropertyValueChanged;
-
-			Source = e.NewValue as IDependencyProperty;
-
-			if (Source != null) {
-				if (Source.Value != null)
-					Property = (Source.Value as DependencyObject).GetProperty (PropertyName);
-				Source.DependencyPropertyValueChanged += HandlePropertyValueChanged;
-			}
-		}
-
-		private void HandlePropertyValueChanged (object sender, DPropertyValueChangedEventArgs e)
-		{
-			Property = (e.NewValue as DependencyObject).GetProperty (PropertyName);
+			property = BuildProperty<IDependencyProperty> ("Property");
 		}
 	}
 }

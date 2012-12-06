@@ -31,14 +31,14 @@ namespace moro.Framework.Data
 	{
 		private bool updating = false;
 
-		private BindingExpression Source { get; set; }
-		private BindingExpression Target { get; set; }
+		private PathExpression Source { get; set; }
+		private PathExpression Target { get; set; }
 		private IValueConverter Converter { get; set; }
 
 		private IDependencyProperty SourceProperty { get; set; }
 		private IDependencyProperty TargetProperty { get; set; }
 
-		public Binding (BindingExpression source, BindingExpression target, IValueConverter converter)
+		public Binding (PathExpression source, PathExpression target, IValueConverter converter)
 		{
 			Source = source;
 			Target = target;

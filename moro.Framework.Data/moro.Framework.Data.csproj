@@ -41,10 +41,10 @@
     <Compile Include="DependencyProperty.cs" />
     <Compile Include="DPropertyValueChangedEventArgs.cs" />
     <Compile Include="Binding.cs" />
-    <Compile Include="PathExpressions\BindingExpression.cs" />
+    <Compile Include="PathExpressions\PathExpression.cs" />
     <Compile Include="IValueConverter.cs" />
     <Compile Include="EmptyConverter.cs" />
-    <Compile Include="PathExpressions\PathExpression.cs" />
+    <Compile Include="PathExpressions\PropertyExpression.cs" />
     <Compile Include="PathExpressions\SelfExpression.cs" />
     <Compile Include="IAttachedPropertiesContainer.cs" />
     <Compile Include="BindingOperations.cs" />
