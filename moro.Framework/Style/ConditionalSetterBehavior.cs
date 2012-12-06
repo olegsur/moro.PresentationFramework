@@ -29,21 +29,21 @@ namespace moro.Framework
 {
 	public class ConditionalSetterBehavior : ISetterBehavior
 	{
-		private SetterBehavior operation;
-		private SetterCondition condition;
+		private SetterBehavior Behavior { get; set; }
+		private SetterCondition Condition { get; set; }
 		private bool isSetterApplied;
 
-		public ConditionalSetterBehavior (SetterCondition condition, SetterBehavior operation)
+		public ConditionalSetterBehavior (SetterCondition condition, SetterBehavior behavior)
 		{
-			this.operation = operation;
-			this.condition = condition;
-			this.condition.Changed += HandleConditionChanged;
+			Behavior = behavior;
+			Condition = condition;
+			Condition.GetProperty ("IsMatch").DependencyPropertyValueChanged += HandleIsMatchChanged;
 		}
 
 		public void Apply ()
 		{
-			if (condition.IsMatch ()) {
-				operation.Apply ();
+			if (Condition.IsMatch) {
+				Behavior.Apply ();
 				isSetterApplied = true;
 			}
 		}
@@ -51,18 +51,19 @@ namespace moro.Framework
 		public void Remove ()
 		{
 			if (isSetterApplied) {
-				operation.Remove ();
+				Behavior.Remove ();
 				isSetterApplied = false;
 			}
 		}
 
-		private void HandleConditionChanged (object sender, EventArgs e)
+		private void HandleIsMatchChanged (object sender, moro.Framework.Data.DPropertyValueChangedEventArgs e)
 		{
-			if (condition.IsMatch ())
+			if (Condition.IsMatch)
 				Apply ();
 			else
 				Remove ();
 		}
+
 	}
 }
 

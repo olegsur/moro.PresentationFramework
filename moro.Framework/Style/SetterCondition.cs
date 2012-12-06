@@ -28,36 +28,37 @@ using moro.Framework.Data;
 
 namespace moro.Framework
 {
-	public class SetterCondition
+	public class SetterCondition : DependencyObject
 	{
-		public event EventHandler Changed;
+		private DependencyProperty<object> sourceValue;
+		private DependencyProperty<bool> isMatch;
 
-		private DependencyObject Object { get; set; }
-		private IDependencyProperty Property { get; set; }
+		private object SourceValue {
+			get { return sourceValue.Value; }
+			set { sourceValue.Value = value; }
+		}
+
+		public bool IsMatch {
+			get { return isMatch.Value; }
+			set { isMatch.Value = value; }
+		}
+
 		private object Value { get; set; }
 
-		public SetterCondition (DependencyObject o, string property, object value)
+		public SetterCondition (DependencyObject source, string path, object value)
 		{
-			Object = o;
-			Property = Object.GetProperty (property);
 			Value = value;
-		
-			if (Property != null)
-				Property.DependencyPropertyValueChanged += HandlePropertyChanged;
+
+			isMatch = BuildProperty<bool> ("IsMatch");
+			sourceValue = BuildProperty<object> ("SourceValue");
+			sourceValue.DependencyPropertyValueChanged += HandlePropertyValueChanged;
+
+			BindingOperations.SetBinding (source, path, sourceValue);
 		}
 
-		public bool IsMatch ()
+		private void HandlePropertyValueChanged (object sender, DPropertyValueChangedEventArgs<object> e)
 		{
-			if (Property == null || Property.Value == null)
-				return false;
-
-			return Property.Value.Equals (Value);
-		}
-
-		private void HandlePropertyChanged (object sender, DPropertyValueChangedEventArgs e)
-		{
-			if (Changed != null)
-				Changed (this, EventArgs.Empty);
+			IsMatch = (e.NewValue == null) ? Value == null : e.NewValue.Equals (Value);
 		}
 	}
 }
