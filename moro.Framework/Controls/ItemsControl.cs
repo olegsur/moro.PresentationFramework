@@ -153,10 +153,8 @@ namespace moro.Framework
 				}
 				break;
 			case NotifyCollectionChangedAction.Remove:
-				foreach (var o in e.OldItems) {
-					var item = Items.First (i => i.Item == o);
-					
-					ItemsPanel.Children.Remove (item.Visual);
+				foreach (var itemView in e.OldItems.Cast<ItemView>()) {					
+					ItemsPanel.Children.Remove (itemView.Visual);
 				}
 				break;
 			case NotifyCollectionChangedAction.Replace:

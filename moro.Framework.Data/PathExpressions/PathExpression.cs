@@ -32,6 +32,11 @@ namespace moro.Framework.Data
 		private string PropertyName { get; set; }
 		private IDependencyProperty Source { get; set; }
 
+		public PathExpression (IDependencyProperty property)
+		{
+			Property = property;
+		}
+
 		public PathExpression (BindingExpression expression, string propertyName)
 		{
 			PropertyName = propertyName;
